@@ -1,0 +1,85 @@
+.Home {
+    font-family: Arial, sans-serif;
+  }
+  
+  .Home-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #f8f8f8;
+  }
+  
+  .logo {
+    font-size: 24px;
+  }
+  
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+  }
+  
+  nav ul li a {
+    text-decoration: none;
+    color: black;
+  }
+  
+  .auth-buttons button {
+    margin-left: 10px;
+  }
+  
+  .featured-event {
+    display: flex;
+    justify-content: space-between;
+    padding: 40px;
+    background-color: #f0f0f0;
+  }
+  
+  .event-info {
+    max-width: 50%;
+  }
+  
+  .view-event-btn {
+    margin-top: 20px;
+  }
+  
+  .event-video-placeholder {
+    width: 300px;
+    height: 200px;
+    background-color: #ccc;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .new-events, .favorite-events, .upcoming-events {
+    padding: 40px 20px;
+  }
+  
+  .event-list {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .event-card {
+    width: 96%;
+    padding: 20px;
+    background-color: #f8f8f8;
+    text-align: center;
+  }
+  
+  .footer {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    background-color: #f8f8f8;
+    margin-top: 20px;
+  }
+  
+  .footer-links a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: black;
+  }
+  
