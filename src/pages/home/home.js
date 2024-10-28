@@ -5,22 +5,6 @@ import './home.css';
 function Home() {
   return (
     <div className="Home">
-      {/* Header */}
-      <header className="Home-header d-flex justify-content-between align-items-center p-3">
-        <div className="logo">LOGO</div>
-        <nav>
-          <ul className="nav">
-            <li className="nav-item"><a className="nav-link" href="#catalogo">Catálogo</a></li>
-            <li className="nav-item"><a className="nav-link" href="#politicas">Políticas</a></li>
-            <li className="nav-item"><a className="nav-link" href="#contato">Contato</a></li>
-          </ul>
-        </nav>
-        <div className="auth-buttons">
-          <button className="btn btn-outline-primary me-2">Entrar</button>
-          <button className="btn btn-primary">Registrar</button>
-        </div>
-      </header>
-
       {/* Evento Destaque */}
       <section className="featured-event container my-5 p-4 bg-light rounded">
         <div className="row">
@@ -92,22 +76,6 @@ function Home() {
           ))}
         </div>
       </section>
-
-      {/* Footer */}
-      <footer className="container text-center py-4">
-        <div className="d-flex justify-content-center align-items-center mb-3">
-          <div className="footer-logo">LOGO</div>
-        </div>
-        <div className="d-flex justify-content-center align-items-center mb-3 social-icons">
-          <div className="mx-2">X</div>
-          <div className="mx-2">@</div>
-        </div>
-        <div className="footer-links">
-          <a href="#sobre" className="mx-2">Sobre</a>
-          <a href="#contato" className="mx-2">Contato</a>
-          <a href="#politicas" className="mx-2">Políticas</a>
-        </div>
-      </footer>
     </div>
   );
 }
