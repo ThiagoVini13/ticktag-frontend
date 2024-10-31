@@ -9,8 +9,7 @@ import { Routes, Route } from 'react-router-dom';
 import Catalago from './pages/Catalago/Catalago.js';
 import Politica from './pages/Politica/Politica.js';
 import Contato from './pages/Contato/Contato.js';
-import EventPage from "./pages/EventPage";
-
+import Evento from './pages/Evento/Evento';
 
 
 function App() {
@@ -22,7 +21,7 @@ function App() {
           <Route path="/catalogo" element={<Catalago />} />
           <Route path="/politica" element={<Politica />} />
           <Route path="/contato" element={<Contato />} />
-          <Route path="/evento/id/:idEvento" element={<EventPage />} />
+          <Route path="/evento/id/:idEvento" element={<Evento />} />
         </Routes>
       <Footer/>
     </div>
