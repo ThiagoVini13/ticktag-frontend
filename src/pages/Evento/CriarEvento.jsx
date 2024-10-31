@@ -1,0 +1,439 @@
+import React, { useState } from 'react';
+import './CriarEvento.css';
+
+function CriarEvento() {
+    const [evento, setEvento] = useState({
+        nomeEvento: '',
+        statusEvento: '',
+        dataEvento: '',
+        horaEvento: '',
+        enderecoVO: {
+            tipoLogradouro: '',
+            nomeLogradouro: '',
+            numero: '',
+            complemento: '',
+            bairro: '',
+            cidade: '',
+            uf: '',
+            nomeEspaco: ''
+        },
+        ingressos: [],
+        lotacaoMaxima: '',
+        classificacaoIdade: ''
+    });
+
+    const [ingresso, setIngresso] = useState({
+        lote: '',
+        qtdLote: '',
+        valorIngresso: '',
+        valorMeiaIngresso: '',
+        tipoIngressoVO: '',
+        statusIngresso: 'disponível'
+    });
+
+    const [opcoesTipoIngresso, setOpcoesTipoIngresso] = useState([]);
+    const [novoTipoIngresso, setNovoTipoIngresso] = useState('');
+    const [ingressoAdicionado, setIngressoAdicionado] = useState(false);
+
+    const estados = [
+        "AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA",
+        "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN",
+        "RS", "RO", "RR", "SC", "SP", "SE", "TO"
+    ];
+
+    // Manipula mudanças nos campos do formulário de evento
+    const manipularMudancaEvento = (e) => {
+        const { name, value } = e.target;
+        setEvento(prevState => ({ ...prevState, [name]: value }));
+    };
+
+    // Manipula mudanças nos campos do endereço
+    const manipularMudancaEndereco = (e) => {
+        const { name, value } = e.target;
+        setEvento(prevState => ({
+            ...prevState,
+            enderecoVO: { ...prevState.enderecoVO, [name]: value }
+        }));
+    };
+
+    // Manipula mudanças nos campos do ingresso
+    const manipularMudancaIngresso = (e) => {
+        const { name, value } = e.target;
+        setIngresso(prevState => ({ ...prevState, [name]: value }));
+    };
+
+    // Adiciona um novo ingresso ao evento
+    const adicionarIngresso = () => {
+        if (!ingressoAdicionado && (!ingresso.tipoIngressoVO || !ingresso.lote || !ingresso.qtdLote || !ingresso.valorIngresso)) {
+            alert('Por favor, preencha todos os campos obrigatórios do ingresso.');
+            return;
+        }
+
+        setEvento(prevState => ({
+            ...prevState,
+            ingressos: [...prevState.ingressos, { ...ingresso }]
+        }));
+
+        setIngresso({
+            lote: '',
+            qtdLote: '',
+            valorIngresso: '',
+            valorMeiaIngresso: '',
+            tipoIngressoVO: '',
+            statusIngresso: 'disponível'
+        });
+
+        setIngressoAdicionado(true);
+    };
+
+    // Adiciona uma nova opção de tipo de ingresso
+    const adicionarOpcaoTipoIngresso = () => {
+        if (novoTipoIngresso.trim() === '') {
+            alert('Por favor, insira um tipo de ingresso válido.');
+            return;
+        }
+        setOpcoesTipoIngresso([...opcoesTipoIngresso, novoTipoIngresso]);
+        setNovoTipoIngresso('');
+    };
+
+    // Combina a data e a hora do evento em um formato ISO
+    const combinarDataHora = () => {
+        if (evento.dataEvento && evento.horaEvento) {
+            return new Date(`${evento.dataEvento}T${evento.horaEvento}:00`).toISOString();
+        }
+        return null;
+    };
+
+    // Submete o formulário do evento
+    const manipularSubmissao = async (e) => {
+        e.preventDefault();
+
+        if (!evento.nomeEvento || !evento.statusEvento || !combinarDataHora() || !evento.lotacaoMaxima || !evento.classificacaoIdade) {
+            alert('Por favor, preencha todos os campos obrigatórios.');
+            return;
+        }
+
+        if (evento.ingressos.length === 0) {
+            alert('Por favor, adicione pelo menos um tipo de ingresso.');
+            return;
+        }
+
+        const eventoFormatado = {
+            ...evento,
+            dataEvento: combinarDataHora()
+        };
+
+        try {
+            const resposta = await fetch('http://localhost:8080/evento', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(eventoFormatado)
+            });
+
+            if (!resposta.ok) throw new Error('Erro ao criar o evento');
+
+            const dados = await resposta.json();
+            alert('Evento criado com sucesso!');
+            console.log('Evento criado:', dados);
+        } catch (erro) {
+            console.error('Erro ao enviar o evento:', erro);
+        }
+    };
+
+    return (
+        <div className="criar-evento-page container">
+            <h2 className="mb-4">Criar Evento</h2>
+            <p>Preencha os detalhes do evento. Campos marcados com * são obrigatórios.</p>
+            <form onSubmit={manipularSubmissao}>
+                {/* Seção: Informações Básicas */}
+                <section className="section">
+                    <h4 className="section-title">Informações Básicas</h4>
+                    <div className="form-group">
+                        <label htmlFor="nomeEvento">Nome do Evento*</label>
+                        <input
+                            type="text"
+                            id="nomeEvento"
+                            className="form-control"
+                            name="nomeEvento"
+                            value={evento.nomeEvento}
+                            onChange={manipularMudancaEvento}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="statusEvento">Status do Evento*</label>
+                        <select
+                            id="statusEvento"
+                            className="form-control"
+                            name="statusEvento"
+                            value={evento.statusEvento}
+                            onChange={manipularMudancaEvento}
+                            required
+                        >
+                            <option value="">Selecione</option>
+                            <option value="ativo">Ativo</option>
+                            <option value="inativo">Inativo</option>
+                            <option value="planejado">Planejado</option>
+                        </select>
+                    </div>
+                    <div className="form-row">
+                        <div className="form-group col">
+                            <label htmlFor="dataEvento">Data do Evento*</label>
+                            <input
+                                type="date"
+                                id="dataEvento"
+                                className="form-control"
+                                name="dataEvento"
+                                value={evento.dataEvento}
+                                onChange={manipularMudancaEvento}
+                                required
+                            />
+                        </div>
+                        <div className="form-group col">
+                            <label htmlFor="horaEvento">Hora do Evento*</label>
+                            <input
+                                type="time"
+                                id="horaEvento"
+                                className="form-control"
+                                name="horaEvento"
+                                value={evento.horaEvento}
+                                onChange={manipularMudancaEvento}
+                                required
+                            />
+                        </div>
+                    </div>
+                </section>
+
+                {/* Seção: Endereço */}
+                <section className="section">
+                    <h4 className="section-title">Endereço</h4>
+                    <div className="form-row">
+                        <div className="form-group col">
+                            <label htmlFor="tipoLogradouro">Tipo de Logradouro*</label>
+                            <input
+                                type="text"
+                                id="tipoLogradouro"
+                                className="form-control"
+                                name="tipoLogradouro"
+                                value={evento.enderecoVO.tipoLogradouro}
+                                onChange={manipularMudancaEndereco}
+                                required
+                            />
+                        </div>
+                        <div className="form-group col">
+                            <label htmlFor="nomeLogradouro">Nome do Logradouro*</label>
+                            <input
+                                type="text"
+                                id="nomeLogradouro"
+                                className="form-control"
+                                name="nomeLogradouro"
+                                value={evento.enderecoVO.nomeLogradouro}
+                                onChange={manipularMudancaEndereco}
+                                required
+                            />
+                        </div>
+                    </div>
+                    <div className="form-row">
+                        <div className="form-group col">
+                            <label htmlFor="numero">Número*</label>
+                            <input
+                                type="text"
+                                id="numero"
+                                className="form-control"
+                                name="numero"
+                                value={evento.enderecoVO.numero}
+                                onChange={manipularMudancaEndereco}
+                                required
+                            />
+                        </div>
+                        <div className="form-group col">
+                            <label htmlFor="complemento">Complemento</label>
+                            <input
+                                type="text"
+                                id="complemento"
+                                className="form-control"
+                                name="complemento"
+                                value={evento.enderecoVO.complemento}
+                                onChange={manipularMudancaEndereco}
+                            />
+                        </div>
+                    </div>
+                    <div className="form-row">
+                        <div className="form-group col">
+                            <label htmlFor="bairro">Bairro*</label>
+                            <input
+                                type="text"
+                                id="bairro"
+                                className="form-control"
+                                name="bairro"
+                                value={evento.enderecoVO.bairro}
+                                onChange={manipularMudancaEndereco}
+                                required
+                            />
+                        </div>
+                        <div className="form-group col">
+                            <label htmlFor="cidade">Cidade*</label>
+                            <input
+                                type="text"
+                                id="cidade"
+                                className="form-control"
+                                name="cidade"
+                                value={evento.enderecoVO.cidade}
+                                onChange={manipularMudancaEndereco}
+                                required
+                            />
+                        </div>
+                        <div className="form-group col">
+                            <label htmlFor="uf">UF (Estado)*</label>
+                            <select
+                                id="uf"
+                                className="form-control"
+                                name="uf"
+                                value={evento.enderecoVO.uf}
+                                onChange={manipularMudancaEndereco}
+                                required
+                            >
+                                <option value="">Selecione</option>
+                                {estados.map(estado => (
+                                    <option key={estado} value={estado}>{estado}</option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Seção: Ingressos */}
+                <section className="section">
+                    <h4 className="section-title">Ingressos</h4>
+                    {/* Linha superior */}
+                    <div className="form-row">
+                        <div className="form-group col">
+                            <label htmlFor="lote">Lote*</label>
+                            <input
+                                type="number"
+                                id="lote"
+                                className="form-control"
+                                name="lote"
+                                value={ingresso.lote}
+                                onChange={manipularMudancaIngresso}
+                                required={!ingressoAdicionado}
+                            />
+                        </div>
+                        <div className="form-group col">
+                            <label htmlFor="qtdLote">Quantidade*</label>
+                            <input
+                                type="number"
+                                id="qtdLote"
+                                className="form-control"
+                                name="qtdLote"
+                                value={ingresso.qtdLote}
+                                onChange={manipularMudancaIngresso}
+                                required={!ingressoAdicionado}
+                            />
+                        </div>
+                    </div>
+
+                    {/* Linha do meio */}
+                    <div className="form-row">
+                        <div className="form-group col">
+                            <label htmlFor="tipoIngressoVO">Tipo de Ingresso*</label>
+                            <select
+                                id="tipoIngressoVO"
+                                className="form-control"
+                                name="tipoIngressoVO"
+                                value={ingresso.tipoIngressoVO}
+                                onChange={manipularMudancaIngresso}
+                                required={!ingressoAdicionado}
+                            >
+                                <option value="">Nenhum tipo selecionado</option>
+                                {opcoesTipoIngresso.map((opcao, index) => (
+                                    <option key={index} value={opcao}>{opcao}</option>
+                                ))}
+                            </select>
+                            <div className="adicionar-opcao-tipo">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    placeholder="Novo tipo de ingresso"
+                                    value={novoTipoIngresso}
+                                    onChange={(e) => setNovoTipoIngresso(e.target.value)}
+                                />
+                                <button type="button" className="btn btn-outline" onClick={adicionarOpcaoTipoIngresso}>
+                                    Adicionar Tipo
+                                </button>
+                            </div>
+                        </div>
+                        <div className="form-group col">
+                            <label htmlFor="valorIngresso">Valor*</label>
+                            <input
+                                type="number"
+                                id="valorIngresso"
+                                className="form-control"
+                                name="valorIngresso"
+                                value={ingresso.valorIngresso}
+                                onChange={manipularMudancaIngresso}
+                                required={!ingressoAdicionado}
+                            />
+                            <label htmlFor="valorMeiaIngresso">Valor Meia</label>
+                            <input
+                                type="number"
+                                id="valorMeiaIngresso"
+                                className="form-control"
+                                name="valorMeiaIngresso"
+                                value={ingresso.valorMeiaIngresso}
+                                onChange={manipularMudancaIngresso}
+                            />
+                            <button type="button" className="btn btn-add mt-3" onClick={adicionarIngresso}>
+                                Adicionar Ingresso
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* Linha inferior (lista de ingressos) */}
+                    {evento.ingressos.length > 0 && (
+                        <ul className="lista-ingressos">
+                            {evento.ingressos.map((t, index) => (
+                                <li key={index} className="item-ingresso">
+                                    <i className="fas fa-ticket-alt"></i> Lote: {t.lote}, Quantidade: {t.qtdLote}, Valor: R${t.valorIngresso}, Valor Meia: R${t.valorMeiaIngresso}, Tipo: {t.tipoIngressoVO}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+                </section>
+
+                {/* Seção: Informações Adicionais */}
+                <section className="section">
+                    <h4 className="section-title">Informações Adicionais</h4>
+                    <div className="form-group">
+                        <label htmlFor="lotacaoMaxima">Lotação Máxima*</label>
+                        <input
+                            type="number"
+                            id="lotacaoMaxima"
+                            className="form-control"
+                            name="lotacaoMaxima"
+                            value={evento.lotacaoMaxima}
+                            onChange={manipularMudancaEvento}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label htmlFor="classificacaoIdade">Classificação Etária*</label>
+                        <input
+                            type="number"
+                            id="classificacaoIdade"
+                            className="form-control"
+                            name="classificacaoIdade"
+                            value={evento.classificacaoIdade}
+                            onChange={manipularMudancaEvento}
+                            required
+                        />
+                    </div>
+                </section>
+
+                <button type="submit" className="btn btn-primary">Criar Evento</button>
+            </form>
+        </div>
+    );
+}
+
+export default CriarEvento;

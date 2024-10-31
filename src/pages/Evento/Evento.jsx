@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { FaMapMarkerAlt, FaCalendarAlt, FaUser } from 'react-icons/fa'; // Usando Font Awesome para ícones
+// Usando Font Awesome para ícones
 import DetalhesEvento from './DetalhesEvento';
 import ListaIngressos from './ListaIngressos';
 import Carregando from './Carregando';

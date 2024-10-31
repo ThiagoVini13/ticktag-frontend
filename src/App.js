@@ -10,6 +10,7 @@ import Catalago from './pages/Catalago/Catalago.js';
 import Politica from './pages/Politica/Politica.js';
 import Contato from './pages/Contato/Contato.js';
 import Evento from './pages/Evento/Evento';
+import CriarEvento from './pages/Evento/CriarEvento'; // Adjust the path as needed
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           <Route path="/politica" element={<Politica />} />
           <Route path="/contato" element={<Contato />} />
           <Route path="/evento/id/:idEvento" element={<Evento />} />
+          <Route path="/criar-evento" element={<CriarEvento />} />
         </Routes>
       <Footer/>
     </div>
