@@ -1,21 +1,28 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Footer.css';
 
 function Footer() {
   return (
-    <footer className="container text-center py-4">
-        <div className="d-flex justify-content-center align-items-center mb-3">
-            <div className="footer-logo">LOGO</div>
+    <footer className="d-flex justify-content-around footer p-0 m-0 pt-3">
+        <div className="d-flex justify-content-center align-items-center flex-column">
+          <div>
+            <Link to="/">
+              <img src={require('../../assets/logo-ticktag.svg').default} alt="Icon" width="100" height="50" title="home" />
+            </Link>
+          </div>
+          <div className="d-flex justify-content-center align-items-center social-icons">
+              <div className="mx-2">X</div>
+              <div className="mx-2">@</div>
+          </div>
         </div>
         <div className="d-flex justify-content-center align-items-center mb-3 social-icons">
-            <div className="mx-2">X</div>
-            <div className="mx-2">@</div>
-        </div>
-        <div className="footer-links">
-            <a href="#sobre" className="mx-2">Sobre</a>
-            <a href="#contato" className="mx-2">Contato</a>
-            <a href="#politicas" className="mx-2">Políticas</a>
+          <ul className="nav">
+            <li className="nav-item"><Link to="/catalogo" className="nav-link" >Catálogo</Link></li>
+            <li className="nav-item"><Link to="/politica" className="nav-link" >Políticas</Link></li>
+            <li className="nav-item"><Link to="/contato" className="nav-link" >Contato</Link></li>
+          </ul>
         </div>
     </footer>
   );
