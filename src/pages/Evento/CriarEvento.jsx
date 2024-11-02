@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './CriarEvento.css';
 
 function CriarEvento() {
+    const navigate = useNavigate();
     const [evento, setEvento] = useState({
         nomeEvento: '',
         statusEvento: '',
@@ -17,18 +19,19 @@ function CriarEvento() {
             uf: '',
             nomeEspaco: ''
         },
-        ingressos: [],
+        tickets: [],
         lotacaoMaxima: '',
-        classificacaoIdade: ''
+        classificacaoIdade: '',
+        baseImagem:''
     });
 
     const [ingresso, setIngresso] = useState({
         lote: '',
         qtdLote: '',
-        valorIngresso: '',
-        valorMeiaIngresso: '',
-        tipoIngressoVO: '',
-        statusIngresso: 'disponível'
+        valorTicket: '',
+        valorMeiaTicket: '',
+        tipoTicket: '',
+        statusTicket: 'disponível'
     });
 
     const [opcoesTipoIngresso, setOpcoesTipoIngresso] = useState([]);
@@ -41,6 +44,45 @@ function CriarEvento() {
         "RS", "RO", "RR", "SC", "SP", "SE", "TO"
     ];
 
+    const tipDeLogradouros = [
+        "Avenida",
+        "Rua",
+        "Praça",
+        "Travessa",
+        "Alameda",
+        "Estrada",
+        "Rodovia",
+        "Boulevard",
+        "Vila",
+        "Condomínio",
+        "Largo",
+        "Campo",
+        "Passagem",
+        "Ponte",
+        "Viaduto",
+        "Morro",
+        "Praia",
+        "Caminho",
+        "Setor",
+        "Quadra",
+        "Área",
+        "Sítio",
+        "Fazenda",
+        "Hiperlote",
+        "Parque",
+        "Pátio",
+        "Canteiro",
+        "Beco",
+        "Cerro",
+        "Caminho",
+        "Marginal",
+        "Escadaria",
+        "Subida",
+        "Ladeira",
+        "Jardim",
+        "Bairro"
+    ];
+    
     // Manipula mudanças nos campos do formulário de evento
     const manipularMudancaEvento = (e) => {
         const { name, value } = e.target;
@@ -64,23 +106,23 @@ function CriarEvento() {
 
     // Adiciona um novo ingresso ao evento
     const adicionarIngresso = () => {
-        if (!ingressoAdicionado && (!ingresso.tipoIngressoVO || !ingresso.lote || !ingresso.qtdLote || !ingresso.valorIngresso)) {
+        if (!ingressoAdicionado && (!ingresso.tipoTicket || !ingresso.lote || !ingresso.qtdLote || !ingresso.valorTicket)) {
             alert('Por favor, preencha todos os campos obrigatórios do ingresso.');
             return;
         }
 
         setEvento(prevState => ({
             ...prevState,
-            ingressos: [...prevState.ingressos, { ...ingresso }]
+            tickets: [...prevState.tickets, { ...ingresso }]
         }));
 
         setIngresso({
             lote: '',
             qtdLote: '',
-            valorIngresso: '',
-            valorMeiaIngresso: '',
-            tipoIngressoVO: '',
-            statusIngresso: 'disponível'
+            valorTicket: '',
+            valorMeiaTicket: '',
+            tipoTicket: '',
+            statusTicket: 'disponível'
         });
 
         setIngressoAdicionado(true);
@@ -104,6 +146,19 @@ function CriarEvento() {
         return null;
     };
 
+    const manipularMudancaImagem = (event) => {
+        const file = event.target.files[0];
+
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64String = reader.result.split(',')[1]; // Remove o prefixo
+                setEvento((prev) => ({ ...prev, baseImagem: base64String })); // Armazena somente a parte base64
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
     // Submete o formulário do evento
     const manipularSubmissao = async (e) => {
         e.preventDefault();
@@ -113,7 +168,7 @@ function CriarEvento() {
             return;
         }
 
-        if (evento.ingressos.length === 0) {
+        if (evento.tickets.length === 0) {
             alert('Por favor, adicione pelo menos um tipo de ingresso.');
             return;
         }
@@ -133,7 +188,7 @@ function CriarEvento() {
             if (!resposta.ok) throw new Error('Erro ao criar o evento');
 
             const dados = await resposta.json();
-            alert('Evento criado com sucesso!');
+            navigate('/evento/id/'+ dados.data.id);
             console.log('Evento criado:', dados);
         } catch (erro) {
             console.error('Erro ao enviar o evento:', erro);
@@ -142,23 +197,47 @@ function CriarEvento() {
 
     return (
         <div className="criar-evento-page container">
-            <h2 className="mb-4">Criar Evento</h2>
+            {evento.baseImagem !== '' && (
+                <div 
+                    className="hero-section" 
+                    style={{ backgroundImage: `url("data:image/png;base64,${evento.baseImagem}")` }}
+                    >
+                    <div className="hero-overlay">
+                        <h1 className="hero-title">{evento.nomeEvento}</h1>
+                    </div>
+                </div>
+            )}
+            <h2 className="mx-6 mt-4">Criar Evento</h2>
             <p>Preencha os detalhes do evento. Campos marcados com * são obrigatórios.</p>
             <form onSubmit={manipularSubmissao}>
                 {/* Seção: Informações Básicas */}
                 <section className="section">
                     <h4 className="section-title">Informações Básicas</h4>
-                    <div className="form-group">
-                        <label htmlFor="nomeEvento">Nome do Evento*</label>
-                        <input
-                            type="text"
-                            id="nomeEvento"
-                            className="form-control"
-                            name="nomeEvento"
-                            value={evento.nomeEvento}
-                            onChange={manipularMudancaEvento}
-                            required
-                        />
+                    <div className="form-group row">
+                        <div className="col-md">
+                            <label htmlFor="nomeEvento">Nome do Evento*</label>
+                            <input
+                                type="text"
+                                id="nomeEvento"
+                                className="form-control"
+                                name="nomeEvento"
+                                value={evento.nomeEvento}
+                                onChange={manipularMudancaEvento}
+                                required
+                            />
+                        </div>
+                        <div className="col-md">
+                            <label htmlFor="baseImagem">Imagem do Evento*</label>
+                            <input
+                                type="file"
+                                id="baseImagem"
+                                className="form-control"
+                                name="baseImagem"
+                                onChange={manipularMudancaImagem}
+                                required
+                            />
+
+                        </div>
                     </div>
                     <div className="form-group">
                         <label htmlFor="statusEvento">Status do Evento*</label>
@@ -174,6 +253,7 @@ function CriarEvento() {
                             <option value="ativo">Ativo</option>
                             <option value="inativo">Inativo</option>
                             <option value="planejado">Planejado</option>
+                            <option value="cancelado">Cancelado</option>
                         </select>
                     </div>
                     <div className="form-row">
@@ -210,15 +290,19 @@ function CriarEvento() {
                     <div className="form-row">
                         <div className="form-group col">
                             <label htmlFor="tipoLogradouro">Tipo de Logradouro*</label>
-                            <input
-                                type="text"
+                            <select
                                 id="tipoLogradouro"
                                 className="form-control"
                                 name="tipoLogradouro"
                                 value={evento.enderecoVO.tipoLogradouro}
                                 onChange={manipularMudancaEndereco}
                                 required
-                            />
+                            >
+                                <option value="">Selecione</option>
+                                {tipDeLogradouros.map(tipo => (
+                                    <option key={tipo} value={tipo}>{tipo}</option>
+                                ))}
+                            </select>
                         </div>
                         <div className="form-group col">
                             <label htmlFor="nomeLogradouro">Nome do Logradouro*</label>
@@ -237,7 +321,7 @@ function CriarEvento() {
                         <div className="form-group col">
                             <label htmlFor="numero">Número*</label>
                             <input
-                                type="text"
+                                type="number"
                                 id="numero"
                                 className="form-control"
                                 name="numero"
@@ -336,12 +420,12 @@ function CriarEvento() {
                     {/* Linha do meio */}
                     <div className="form-row">
                         <div className="form-group col">
-                            <label htmlFor="tipoIngressoVO">Tipo de Ingresso*</label>
+                            <label htmlFor="tipoTicket">Tipo de Ingresso*</label>
                             <select
-                                id="tipoIngressoVO"
+                                id="tipoTicket"
                                 className="form-control"
-                                name="tipoIngressoVO"
-                                value={ingresso.tipoIngressoVO}
+                                name="tipoTicket"
+                                value={ingresso.tipoTicket}
                                 onChange={manipularMudancaIngresso}
                                 required={!ingressoAdicionado}
                             >
@@ -364,23 +448,23 @@ function CriarEvento() {
                             </div>
                         </div>
                         <div className="form-group col">
-                            <label htmlFor="valorIngresso">Valor*</label>
+                            <label htmlFor="valorTicket">Valor*</label>
                             <input
                                 type="number"
-                                id="valorIngresso"
+                                id="valorTicket"
                                 className="form-control"
-                                name="valorIngresso"
-                                value={ingresso.valorIngresso}
+                                name="valorTicket"
+                                value={ingresso.valorTicket}
                                 onChange={manipularMudancaIngresso}
                                 required={!ingressoAdicionado}
                             />
-                            <label htmlFor="valorMeiaIngresso">Valor Meia</label>
+                            <label htmlFor="valorMeiaTicket">Valor Meia</label>
                             <input
                                 type="number"
-                                id="valorMeiaIngresso"
+                                id="valorMeiaTicket"
                                 className="form-control"
-                                name="valorMeiaIngresso"
-                                value={ingresso.valorMeiaIngresso}
+                                name="valorMeiaTicket"
+                                value={ingresso.valorMeiaTicket}
                                 onChange={manipularMudancaIngresso}
                             />
                             <button type="button" className="btn btn-add mt-3" onClick={adicionarIngresso}>
@@ -390,11 +474,11 @@ function CriarEvento() {
                     </div>
 
                     {/* Linha inferior (lista de ingressos) */}
-                    {evento.ingressos.length > 0 && (
+                    {evento.tickets.length > 0 && (
                         <ul className="lista-ingressos">
-                            {evento.ingressos.map((t, index) => (
+                            {evento.tickets.map((t, index) => (
                                 <li key={index} className="item-ingresso">
-                                    <i className="fas fa-ticket-alt"></i> Lote: {t.lote}, Quantidade: {t.qtdLote}, Valor: R${t.valorIngresso}, Valor Meia: R${t.valorMeiaIngresso}, Tipo: {t.tipoIngressoVO}
+                                    <i className="fas fa-ticket-alt"></i> Lote: {t.lote}, Quantidade: {t.qtdLote}, Valor: R${t.valorTicket}, Valor Meia: R${t.valorMeiaTicket}, Tipo: {t.tipoTicket}
                                 </li>
                             ))}
                         </ul>

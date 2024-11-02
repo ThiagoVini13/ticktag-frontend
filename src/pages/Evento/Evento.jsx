@@ -55,7 +55,10 @@ function Evento() {
     return (
         <div className="evento-page">
             {/* Seção Hero com Banner */}
-            <div className="hero-section" style={{ backgroundImage: `url(${evento.bannerUrl || 'default-banner.jpg'})` }}>
+            <div 
+                className="hero-section" 
+                style={{ backgroundImage: `url("data:image/png;base64,${evento.capaEvento}")` }}
+                >
                 <div className="hero-overlay">
                     <h1 className="hero-title">{evento.nomeEvento}</h1>
                 </div>
@@ -67,6 +70,7 @@ function Evento() {
                     <div className="col-lg-6 mb-4">
                         <DetalhesEvento evento={evento} />
                     </div>
+                    
                     <div className="col-lg-6 mb-4">
                         <ListaIngressos ingressos={evento.tickets} />
                         <div className="purchase-section mt-4">

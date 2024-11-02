@@ -19,7 +19,8 @@ function DetalhesEvento({ evento }) {
                 </div>
                 <div className="evento-info-item">
                     <FaUser className="icon" />
-                    <p><strong>Classificação:</strong> {classificacaoIdade ? `${classificacaoIdade}+` : "Não disponível"}</p>
+                    {/* <p><strong>Classificação:</strong> {classificacaoIdade ? `${classificacaoIdade}+` : "Não disponível"}</p> */}
+                    <p><strong>Classificação:</strong>{classificacaoIdade == 0 ? " Livre" : ` ${classificacaoIdade}+` } </p>
                 </div>
                 {enderecoVO && (
                     <div className="evento-info-item">
