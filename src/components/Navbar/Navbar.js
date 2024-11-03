@@ -1,9 +1,15 @@
 import React from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './Navbar.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Navbar() {
+  const navigate = useNavigate("/register");
+  
+  const handleClick = () => {
+    navigate("/register");
+  }
+
   return (
     <header className="Home-header d-flex justify-content-between align-items-center p-3 border">
       <div>
@@ -20,7 +26,7 @@ function Navbar() {
       </nav>
       <div className="auth-buttons">
         <button className="btn btn-outline-primary me-2">Entrar</button>
-        <button className="btn btn-primary">Registrar</button>
+        <button className="btn btn-primary" onClick={handleClick}>Registrar</button>
       </div>
     </header>
   );
