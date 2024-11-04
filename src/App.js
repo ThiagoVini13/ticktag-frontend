@@ -16,6 +16,7 @@ import Politica from './pages/Politica/Politica';
 import Contato from './pages/Contato/Contato';
 import Evento from './pages/Evento/Evento';
 import CriarEvento from './pages/Evento/CriarEvento';
+import Carrinho from './pages/Carrinho/Carrinho';
 
 
 function App() {
@@ -53,6 +54,14 @@ function App() {
                         element={
                             <PrivateRoute>
                                 <CriarEvento/>
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/carrinho"
+                        element={
+                            <PrivateRoute>
+                                <Carrinho/>
                             </PrivateRoute>
                         }
                     />
