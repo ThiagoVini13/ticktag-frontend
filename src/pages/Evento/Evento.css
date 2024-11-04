@@ -46,25 +46,30 @@
     padding: 40px 20px;
 }
 
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-}
+/* Devemos modificar o tema da aplicação inteira
+ * em um lugar centralizado e não em cada página para
+ * a aplicação ficar consistente.
+ */
 
-.col-lg-6 {
-    flex: 1;
-    min-width: 300px;
-}
+/*.row {*/
+/*    display: flex;*/
+/*    flex-wrap: wrap;*/
+/*    gap: 20px;*/
+/*}*/
 
-/* Card Styling */
-.card {
-    background-color: #fff;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    border-left: 5px solid #007bff; /* Primary color accent */
-}
+/*.col-lg-6 {*/
+/*    flex: 1;*/
+/*    min-width: 300px;*/
+/*}*/
+
+/*/* Card Styling */
+/*.card {*/
+/*    background-color: #fff;*/
+/*    border-radius: 12px;*/
+/*    padding: 20px;*/
+/*    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);*/
+/*    border-left: 5px solid #007bff; !* Primary color accent *!*/
+/*}*/
 
 .detalhes-evento h2 {
     font-size: 1.6rem;
@@ -133,16 +138,16 @@ h2 {
     font-size: 1rem;
 }
 
-.btn {
-    padding: 12px 20px;
-    border: none;
-    border-radius: 8px;
-    font-size: 1rem;
-    font-weight: bold;
-    color: #fff;
-    transition: background-color 0.3s, box-shadow 0.3s;
-    cursor: pointer;
-}
+/*.btn {*/
+/*    padding: 12px 20px;*/
+/*    border: none;*/
+/*    border-radius: 8px;*/
+/*    font-size: 1rem;*/
+/*    font-weight: bold;*/
+/*    color: #fff;*/
+/*    transition: background-color 0.3s, box-shadow 0.3s;*/
+/*    cursor: pointer;*/
+/*}*/
 
 .btn-success {
     background-color: #007bff; /* Primary color */

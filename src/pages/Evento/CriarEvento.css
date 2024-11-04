@@ -50,31 +50,36 @@ h2 {
     margin-top: 10px;
 }
 
-.btn {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
+/* Devemos modificar o tema da aplicação inteira
+ * em um lugar centralizado e não em cada página para
+ * a aplicação ficar consistente.
+ */
 
-.btn:hover {
-    background-color: #0056b3;
-}
+/*.btn {*/
+/*    background-color: #007bff;*/
+/*    color: #fff;*/
+/*    padding: 10px 15px;*/
+/*    border: none;*/
+/*    border-radius: 5px;*/
+/*    font-size: 1rem;*/
+/*    cursor: pointer;*/
+/*    transition: background-color 0.3s ease;*/
+/*}*/
+
+/*.btn:hover {*/
+/*    background-color: #0056b3;*/
+/*}*/
 
 .btn-add {
     background-color: #28a745;
     color: #fff;
 }
 
-.btn-outline {
-    background-color: transparent;
-    color: #007bff;
-    border: 1px solid #007bff;
-}
+/*.btn-outline {*/
+/*    background-color: transparent;*/
+/*    color: #007bff;*/
+/*    border: 1px solid #007bff;*/
+/*}*/
 
 .lista-ingressos {
     list-style-type: none;

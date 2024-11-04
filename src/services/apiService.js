@@ -91,3 +91,13 @@ export async function deleteData(endpoint, token) {
     if (!response.ok) throw new Error("Erro ao excluir dados");
     return await response.json();
 }
+
+export async function fetchPublicData(endpoint) {
+    const response = await fetch(`${API_URL}/${endpoint}`, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    if (!response.ok) throw new Error("Erro ao buscar dados");
+    return await response.json();
+}
