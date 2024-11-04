@@ -22,6 +22,7 @@ function Navbar() {
           <li className="nav-item"><Link to="/catalogo" className="nav-link" >Catálogo</Link></li>
           <li className="nav-item"><Link to="/politica" className="nav-link" >Políticas</Link></li>
           <li className="nav-item"><Link to="/contato" className="nav-link" >Contato</Link></li>
+          <li className="nav-item"><Link to="/carrinho" className="nav-link" >Carrinho</Link></li>
         </ul>
       </nav>
       <div className="auth-buttons">
