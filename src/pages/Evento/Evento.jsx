@@ -14,18 +14,6 @@ function Evento() {
     const [erro, setErro] = useState(null);
     const [ingressoSelecionado, setIngressoSelecionado] = useState(null);
     const [quantidade, setQuantidade] = useState(1);
-    const [itemCarrinho, setItemCarrinho] = useState({
-        carrinho: {
-          usuario: {
-            email: "",
-          },
-        },
-        idEvento: 0,
-        nomeEvento: "",
-        idTipoTicket: 0,
-        nomeTipoTicket: "",
-        quantidade: 1
-    })
 
     useEffect(() => {
         fetchData(`evento/id/${idEvento}`, localStorage.getItem('token'))
@@ -49,44 +37,41 @@ function Evento() {
         if(e.target.value){
             const ticketId = e.target.value;
             const ingresso = evento.tickets.find(t => t.id === parseInt(ticketId));
-            const novoItem = { ...itemCarrinho, idTipoTicket: ingresso.id, nomeTipoTicket: ingresso.tipoTicket};
             setIngressoSelecionado(ingresso);
-            setItemCarrinho(novoItem);
         }
     };
 
     const handleQuantityChange = (e) => {
         const novaQuantidade = e.target.value;
-        const novoItem = { ...itemCarrinho, quantidade: Number(novaQuantidade)};
         setQuantidade(novaQuantidade);
-        setItemCarrinho(novoItem);
     };
 
     const handleBuyNow = async () => {
-        if (!itemCarrinho.idTipoTicket || !itemCarrinho.nomeTipoTicket) {
+        if (!ingressoSelecionado) {
             alert("Por favor, selecione um tipo de ingresso.");
             return;
         }
-        if(!itemCarrinho.quantidade){
-            alert("Por favor, informe uma quantidade de ingresso.");
+        if(!quantidade){
+            alert("Por favor, informe uma quantidade de ingressos.");
             return;
         }
 
-        const carrinhoData = {
-            usuario: {
-                email: localStorage.getItem("email")
-            }
-        };
-
-        const data = { 
-            ...itemCarrinho,
+        const data = {
+            carrinho: {
+                usuario: {
+                    email: localStorage.getItem("email"),
+                },
+            },
             idEvento: evento.id,
             nomeEvento: evento.nomeEvento,
-            carrinho: carrinhoData,
-        }
+            idTipoTicket: ingressoSelecionado.id,
+            nomeTipoTicket: ingressoSelecionado.tipoTicket,
+            status: "PENDENTE",
+            quantidade: quantidade,
+        };
+
         try {
             const response = await createData("item-carrinho", data, localStorage.getItem("token"));
-
             if (response.statusCode !== 200) {
                 throw new Error('Erro ao adicionar item ao carrinho');
             }
