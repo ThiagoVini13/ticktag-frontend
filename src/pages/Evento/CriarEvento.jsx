@@ -180,12 +180,11 @@ function CriarEvento() {
 
         try {
             const response = await createData("evento", eventoFormatado, localStorage.getItem("token"));
+            
+            if (response.statusCode !== 200) throw new Error('Erro ao criar o evento');
 
-            if (!response.ok) throw new Error('Erro ao criar o evento');
-
-            const dados = await response.json();
-            navigate('/evento/id/'+ dados.data.id);
-            console.log('Evento criado:', dados);
+            navigate('/evento/id/'+ response.data.id);
+            console.log('Evento criado:', response.data);
         } catch (erro) {
             console.error('Erro ao enviar o evento:', erro);
         }
