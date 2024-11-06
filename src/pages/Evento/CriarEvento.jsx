@@ -75,7 +75,6 @@ function CriarEvento() {
         "Canteiro",
         "Beco",
         "Cerro",
-        "Caminho",
         "Marginal",
         "Escadaria",
         "Subida",
