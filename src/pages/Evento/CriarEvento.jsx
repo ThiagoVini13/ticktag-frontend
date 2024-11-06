@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './CriarEvento.css';
+import { createData } from '../../services/apiService';
 
 function CriarEvento() {
     const navigate = useNavigate();
@@ -179,15 +180,11 @@ function CriarEvento() {
         };
 
         try {
-            const resposta = await fetch('http://localhost:8080/evento', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(eventoFormatado)
-            });
+            const response = await createData("evento", eventoFormatado, localStorage.getItem("token"));
 
-            if (!resposta.ok) throw new Error('Erro ao criar o evento');
+            if (!response.ok) throw new Error('Erro ao criar o evento');
 
-            const dados = await resposta.json();
+            const dados = await response.json();
             navigate('/evento/id/'+ dados.data.id);
             console.log('Evento criado:', dados);
         } catch (erro) {
