@@ -55,21 +55,19 @@ function Evento() {
             alert("Por favor, informe uma quantidade de ingressos.");
             return;
         }
-
+        
         const data = {
             carrinho: {
                 usuario: {
                     email: localStorage.getItem("email"),
                 },
             },
-            idEvento: evento.id,
-            nomeEvento: evento.nomeEvento,
-            idTipoTicket: ingressoSelecionado.id,
-            nomeTipoTicket: ingressoSelecionado.tipoTicket,
-            status: "PENDENTE",
+            evento: evento,
+            tipoTicket: ingressoSelecionado,
             quantidade: quantidade,
+            status: "PENDENTE",
         };
-
+        
         try {
             const response = await createData("item-carrinho", data, localStorage.getItem("token"));
             if (response.statusCode !== 200) {
