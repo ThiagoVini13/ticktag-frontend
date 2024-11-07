@@ -5,6 +5,7 @@ import { fetchData, createData,  updateData, deleteData } from '../../services/a
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
+import Base64Image from '../../utils/BaseImage';
 
 function Home() {
   let [eventos, setEventos] = useState([]);
@@ -12,14 +13,13 @@ function Home() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const response = await fetchData("evento");
+        const response = await fetchData("evento", localStorage.getItem("token"));
         setEventos(response.data || []);
       } catch (error) {
         console.error("Erro ao carregar dados:", error);
       }
     };
     loadData();
-    console.log(eventos);
   }, []);
 
   const eventoDoDia = eventos.filter((event) => new Date(event.dataEvento).toLocaleDateString('pt-BR') === new Date().toLocaleDateString('pt-BR'));
@@ -34,17 +34,17 @@ function Home() {
         <div className="d-flex justify-content-around">
           <div className="col-md-8 event-info">
             <h2 className="mb-3">Destaque</h2>
-            <h3 className="mb-3">{eventoDoDia[indiceAleatorio]?.nomeEvento}</h3>
-            <p className="text-muted">Dia:{new Date(eventoDoDia[indiceAleatorio]?.dataEvento).toLocaleDateString("pt-BR", {
+            <h3 className="mb-3">{eventos[indiceAleatorio]?.nomeEvento}</h3>
+            <p className="text-muted">Dia:{new Date(eventos[indiceAleatorio]?.dataEvento).toLocaleDateString("pt-BR", {
                           day: "2-digit",
                           month: "2-digit",
                           year: "numeric"
                         })}</p>
-            <p> Local: {eventoDoDia[indiceAleatorio]?.enderecoVO?.nomeEspaco }</p>
-            <Button variant="primary"><Link to={`/evento/id/${eventoDoDia[indiceAleatorio]?.id}`} className="nav-link" >Saiba mais</Link></Button>
+            <p> Local: {eventos[indiceAleatorio]?.enderecoVO.nomeEspaco }</p>
+            <Button variant="primary"><Link to={`/evento/id/${eventos[indiceAleatorio]?.id}`} className="nav-link" >Saiba mais</Link></Button>
           </div>
           <div className="col-md-4 d-flex justify-content-center align-items-center event-video-placeholder">
-            <img variant="top" src={`data:image/png;base64,${eventoDoDia[indiceAleatorio]?.capaEvento}`} alt="Capa do Evento" style={{ maxHeight: '200px', width: 'auto' }} />
+            <Base64Image base64String={eventos[indiceAleatorio]?.capaEvento}/>
           </div>
         </div>
       </section>
@@ -54,22 +54,22 @@ function Home() {
         <div className="d-flex flex-wrap">
           {eventoDoDia.length > 0 ? (
             eventoDoDia.map((evento, index) => (
-              <div className="col-md-3 mb-4" key={evento.id}>
+              <div className="col-md-3 mb-4" key={evento?.id}>
                 <Card style={{ width: '18rem' }}>
-                <Card.Img variant="top" src={`data:image/png;base64,${evento.capaEvento}`} />
+                <Card.Img variant="top" src={`data:image/png;base64,${evento?.capaEvento}`} />
                   <Card.Body>
-                    <Card.Title>{evento.nomeEvento}</Card.Title>
+                    <Card.Title>{evento?.nomeEvento}</Card.Title>
                     <Card.Text>
                       <p className="event-date text-muted">
-                        {new Date(evento.dataEvento).toLocaleDateString("pt-BR", {
+                        {new Date(evento?.dataEvento).toLocaleDateString("pt-BR", {
                           day: "2-digit",
                           month: "2-digit",
                           year: "numeric"
                         })}
                       </p>
-                      <p>{evento.enderecoVO.nomeEspaco}</p>
+                      <p>{evento?.enderecoVO.nomeEspaco}</p>
                     </Card.Text>
-                    <Button variant="primary"><Link to={`/evento/id/${evento.id}`} className="nav-link" >Saiba mais</Link></Button>
+                    <Button variant="primary"><Link to={`/evento/id/${evento?.id}`} className="nav-link" >Saiba mais</Link></Button>
                   </Card.Body>
                 </Card>
               </div>
@@ -147,17 +147,5 @@ function Home() {
 
 
 }
-
-const Base64Image = ({ base64String }) => {
-  return (
-      <div>
-          {base64String ? (
-              <img src={`data:image/png;base64,${base64String}`} alt="Imagem" style={{ maxWidth: '180px', height: 'auto' }} />
-          ) : (
-              <p>Imagem não disponível.</p>
-          )}
-      </div>
-  );
-};
 
 export default Home;
