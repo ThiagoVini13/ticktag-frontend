@@ -3,15 +3,12 @@ const getToken = () => localStorage.getItem("token");
 
 // Função de registro
 export async function register(userData) {
-    const token = getToken();
     const response = await fetch(`${API_URL}/usuarios`, {
         method: "POST",
         headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`
+            "Content-Type": "application/json"
         },
         body: JSON.stringify(userData),
-        mode: "cors", // Adiciona o modo CORS explicitamente
     });
 
     if (!response.ok) {
