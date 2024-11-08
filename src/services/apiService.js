@@ -108,10 +108,9 @@ export async function fetchData(endpoint) {
 
 // Função de login
 export async function login(email, password) {
-    const token = getToken();
     const response = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
-        headers: {"Content-Type": "application/json", Authorization: `Bearer ${token}`},
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify({email, password}),
     });
 
