@@ -27,14 +27,12 @@ function App() {
                 <div className="App flex-fill">
                     <Routes>
                         {/* Rotas públicas */}
-                        <Route path="/home" element={<Home />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
                         <Route path="/catalogo" element={<Catalago />} />
                         <Route path="/evento/id/:idEvento" element={<Evento />} />
                         <Route path="/politica" element={<Politica />} />
                         <Route path="/contato" element={<Contato />} />
-                        <Route path="/dashboard" element={<Dashboard />} />
 
                         {/* Rotas privadas */}
                         <Route
