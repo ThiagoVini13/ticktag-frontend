@@ -1,15 +1,19 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-function Somatorio({calculaTotal}) {
+function Somatorio({ calculaTotal }) {
   const navigate = useNavigate();
 
   const handlePayment = () => {
-    alert("Redirecionando para a página de pagamento...");
-    setTimeout(() => {
-      navigate("/pagamento");
-    }, 2000);
-  }
+    if (calculaTotal() != 0) {
+      alert("Redirecionando para a página de pagamento...");
+      setTimeout(() => {
+        navigate("/pagamento");
+      }, 2000);
+    } else {
+      alert("Nenhum item no carrinho selecionado");
+    }
+  };
 
   return (
     <>
