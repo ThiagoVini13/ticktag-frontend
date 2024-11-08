@@ -23,7 +23,7 @@ function Contato() {
     e.preventDefault();
 
     emailjs
-      .send('service_snepfbf', 'template_nne98h9', formData, 'user_3IAYe276ECwC0A0vs')
+      .send('service_b9r2wod', 'template_ammz5dj', formData, 'G0YEcMslAtCN-3raU')
       .then(
         (result) => {
           setEnvioStatus('Mensagem enviada com sucesso!');
@@ -34,7 +34,8 @@ function Contato() {
           });
         },
         (error) => {
-          setEnvioStatus('Erro ao enviar a mensagem. Tente novamente.');
+          console.error('Erro ao enviar o email: ', error.text); // Exibe o erro detalhado no console
+          setEnvioStatus(`Erro ao enviar a mensagem: ${error.text}`);
         }
       );
   };
