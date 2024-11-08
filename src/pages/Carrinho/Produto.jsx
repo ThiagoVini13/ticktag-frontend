@@ -16,21 +16,21 @@ function Produto({ data, removerDoCarrinho, atualizarOCarrinho }) {
       </td>
       <td>R$ {data?.tipoTicket.valorTicket}</td>
       <td>
-        <div className="quantidade">
-          <span>{data?.quantidade}</span>
-          {atualizarOCarrinho != null ? (
-            <div>
-              <button onClick={() => atualizarOCarrinho(data, "decrease")}>
-                <i className="bx bx-minus">-</i>
-              </button>
-              <button onClick={() => atualizarOCarrinho(data, "increase")}>
-                <i className="bx bx-plus">+</i>
-              </button>
-            </div>
-          ) : (
-            ""
-          )}
-        </div>
+        {atualizarOCarrinho != null ? (
+          <div className="quantidade">
+            <button onClick={() => atualizarOCarrinho(data, "decrease")}>
+              <i className="bx bx-minus">-</i>
+            </button>
+            <span>{data?.quantidade}</span>
+            <button onClick={() => atualizarOCarrinho(data, "increase")}>
+              <i className="bx bx-plus">+</i>
+            </button>
+          </div>
+        ) : (
+          <div className="quantiadde">
+            <span>{data?.quantidade}</span>
+          </div>
+        )}
       </td>
       <td>R$ {data.tipoTicket?.valorTicket * data?.quantidade}</td>
       {removerDoCarrinho != null ? (
