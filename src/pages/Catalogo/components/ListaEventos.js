@@ -1,6 +1,6 @@
 import React from 'react';
 import CartaoEvento from './CartaoEvento';
-import {Col, Container, Row} from "react-bootstrap";
+import { Col } from "react-bootstrap";
 
 function ListaEventos({ eventos }) {
     return (

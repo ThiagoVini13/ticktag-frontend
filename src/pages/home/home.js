@@ -1,3 +1,4 @@
+
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./home.css";
 import React, { useEffect, useState } from "react";
@@ -5,6 +6,7 @@ import { fetchPublicData } from "../../services/apiService";
 import { Link } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Card from "react-bootstrap/Card";
+import Base64Image from '../../utils/BaseImage';
 
 function Home() {
   const [eventos, setEventos] = useState([]);
@@ -26,23 +28,23 @@ function Home() {
   }, [eventos]);
 
   const eventoDoDia = eventos.filter(
-      (event) =>
-          new Date(event.dataEvento).toLocaleDateString("pt-BR") ===
-          new Date().toLocaleDateString("pt-BR")
+    (event) =>
+        new Date(event.dataEvento).toLocaleDateString("pt-BR") ===
+        new Date().toLocaleDateString("pt-BR")
   );
 
   const proximosEventos = eventos.filter(
-      (event) =>
-          new Date(event.dataEvento).toLocaleDateString("pt-BR") !==
-          new Date().toLocaleDateString("pt-BR")
+    (event) =>
+        new Date(event.dataEvento).toLocaleDateString("pt-BR") !==
+        new Date().toLocaleDateString("pt-BR")
   );
 
   const eventosLivres = eventos.filter(
-      (event) => event.classificacaoIdade === 0
+    (event) => event.classificacaoIdade === 0
   );
 
   const indiceAleatorio =
-      eventoDoDia.length > 0 ? Math.floor(Math.random() * eventoDoDia.length) : -1;
+    eventoDoDia.length > 0 ? Math.floor(Math.random() * eventoDoDia.length) : -1;
 
   return (
       <div className="Home">
@@ -76,15 +78,7 @@ function Home() {
               )}
             </div>
             <div className="col-md-4 d-flex justify-content-center align-items-center event-video-placeholder">
-              <img
-                  src={
-                    eventoDoDia[indiceAleatorio]?.capaEvento
-                        ? `data:image/png;base64,${eventoDoDia[indiceAleatorio].capaEvento}`
-                        : "caminho/para/imagem/padrao.png" // Substitua pelo caminho da sua imagem padrão
-                  }
-                  alt="Capa do Evento"
-                  style={{ maxHeight: "200px", width: "auto" }}
-              />
+              <Base64Image base64String={eventos[indiceAleatorio]?.capaEvento}/>
             </div>
           </div>
         </section>
