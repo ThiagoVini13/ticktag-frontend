@@ -61,7 +61,7 @@ function App() {
                         />
 
                         {/* Rota padrão */}
-                        <Route path="/" element={<Navigate to="/home" />} /> {/* Redireciona para /home */}
+                        <Route path="/" element={<Navigate to="/login" />} /> {/* Redireciona para /home */}
                     </Routes>
                 </div>
                 <Footer />
