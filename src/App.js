@@ -11,18 +11,20 @@ import Footer from './components/Footer/Footer';
 import Home from './pages/home/home';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
-import Catalago from './pages/Catalago/Catalago';
+import Catalago from './pages/Catalogo/Catalogo';
 import Politica from './pages/Politica/Politica';
 import Contato from './pages/Contato/Contato';
 import Evento from './pages/Evento/Evento';
 import CriarEvento from './pages/Evento/CriarEvento';
+import Carrinho from './pages/Carrinho/Carrinho';
 
 
 function App() {
     return (
         <AuthProvider>
+            <div className="d-flex flex-column min-vh-100">
             <Navbar/>
-            <div className="App">
+            <div className="App flex-fill">
                 <Routes>
                     {/* Rotas públicas */}
                     <Route path="/login" element={<Login/>}/>
@@ -42,11 +44,7 @@ function App() {
                     />
                     <Route
                         path="/evento/id/:idEvento"
-                        element={
-                            <PrivateRoute>
-                                <Evento/>
-                            </PrivateRoute>
-                        }
+                        element={<Evento/>}
                     />
                     <Route
                         path="/criar-evento"
@@ -56,9 +54,18 @@ function App() {
                             </PrivateRoute>
                         }
                     />
+                    <Route
+                        path="/carrinho"
+                        element={
+                            <PrivateRoute>
+                                <Carrinho/>
+                            </PrivateRoute>
+                        }
+                    />
                 </Routes>
             </div>
             <Footer/>
+            </div>
         </AuthProvider>
     );
 }
