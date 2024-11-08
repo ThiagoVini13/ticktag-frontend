@@ -1,7 +1,7 @@
 import React from 'react';
 
 function ListaIngressos({ tickets }) {
-    console.log("tickets", tickets)
+    // console.log("tickets", tickets)
     if (!tickets || tickets.length === 0) {
         return <p className="text-muted">Nenhum ingresso disponível.</p>;
     }
