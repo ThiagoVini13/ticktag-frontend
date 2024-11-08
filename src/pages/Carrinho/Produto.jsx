@@ -14,7 +14,7 @@ function Produto({ data, removerDoCarrinho, atualizarOCarrinho }) {
           </div>
         </div>
       </td>
-      <td>R$ {data?.tipoTicket.valorTicket}</td>
+      <td>R$ {data?.tipoTicket.valorTicket.toFixed(2)}</td>
       <td>
         {atualizarOCarrinho != null ? (
           <div className="quantidade">
@@ -32,7 +32,7 @@ function Produto({ data, removerDoCarrinho, atualizarOCarrinho }) {
           </div>
         )}
       </td>
-      <td>R$ {data.tipoTicket?.valorTicket * data?.quantidade}</td>
+      <td>R$ {(data.tipoTicket?.valorTicket * data?.quantidade).toFixed(2)}</td>
       {removerDoCarrinho != null ? (
         <td>
           <button
