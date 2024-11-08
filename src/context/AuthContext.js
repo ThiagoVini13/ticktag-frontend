@@ -38,6 +38,7 @@ export const AuthProvider = ({ children }) => {
             const data = await loginService(email, password);
             setToken(data.token);
             localStorage.setItem('token', data.token);
+            localStorage.setItem('email', email);
             setUser(data);
             navigate('/'); // Redireciona para a página inicial após o login
         } catch (error) {
