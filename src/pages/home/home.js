@@ -1,7 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './home.css';
 import React, { useEffect, useState } from 'react';
-import { fetchData, createData,  updateData, deleteData } from '../../services/apiService';
+import { fetchData} from '../../services/apiService';
 import { Link } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';

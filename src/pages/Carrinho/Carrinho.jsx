@@ -109,7 +109,7 @@ function Carrinho() {
             <tbody>
               {verifyItemsPending() ? (
                 carrinho.itensCarrinho.map((item) =>
-                  item.status == "PENDENTE" ? (
+                  item.status === "PENDENTE" ? (
                     <Produto
                       key={item.id}
                       data={item}

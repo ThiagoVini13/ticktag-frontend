@@ -56,7 +56,7 @@ function Tickets() {
             <tbody>
               {verifyItemsPaid() ? (
                 carrinho.itensCarrinho.map((item) =>
-                  item.status == "PAGO" ? (
+                  item.status === "PAGO" ? (
                     <Produto
                       key={item.id}
                       data={item}

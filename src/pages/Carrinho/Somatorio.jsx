@@ -5,7 +5,7 @@ function Somatorio({ calculaTotal }) {
   const navigate = useNavigate();
 
   const handlePayment = () => {
-    if (calculaTotal() != 0) {
+    if (calculaTotal() !== 0) {
       alert("Redirecionando para a página de pagamento...");
       setTimeout(() => {
         navigate("/pagamento");

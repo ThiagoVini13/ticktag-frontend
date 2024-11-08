@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import './CriarEvento.css';
-import { createData } from '../../services/apiService';
+import { createEvento } from '../../services/apiService';
 
 function CriarEvento() {
     const navigate = useNavigate();

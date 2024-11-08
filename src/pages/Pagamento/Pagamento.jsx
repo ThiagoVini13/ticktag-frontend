@@ -101,13 +101,13 @@ function Pagamento() {
 
   const progressBar = (text, payment) => {
     let element;
-    if (progress == 0) {
+    if (progress === 0) {
       element = (
         <button className="button" onClick={payment}>
           Pagar com {text}
         </button>
       );
-    } else if (progress < 100 && progress != 0) {
+    } else if (progress < 100 && progress !== 0) {
       element = (
         <div className="progress-bar container">
           <div className="loading-bar" style={{ width: `${progress}%` }} />
