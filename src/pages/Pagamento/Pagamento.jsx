@@ -2,15 +2,16 @@ import React, { useState, useEffect } from "react";
 import { QRCodeSVG } from "qrcode.react";
 import "./Pagamento.css";
 import { useNavigate } from "react-router-dom";
-import { fetchData } from "../../services/apiService";
+import { fetchData, updateData } from "../../services/apiService";
 
 function Pagamento() {
   const [paymentMethod, setPaymentMethod] = useState("pix");
+  const [carrinho, setCarrinho] = useState({});
   const [itensCarrinho, setItensCarrinho] = useState([]);
   const [progress, setProgress] = useState(0);
   const [pagamento, setPagamento] = useState("pendente");
   const navigate = useNavigate();
-  const totalDuration = 5000;
+  const totalDuration = 10000;
   const intervalDuration = 100;
   const pix =
     "00020126480014BR.GOV.BCB.PIX0136randomfakexyzid52040000530398654041.905802BR5909Belo Horizonte6009br.gov.pix6304randomcode";
@@ -20,6 +21,20 @@ function Pagamento() {
   }, []);
 
   useEffect(() => {
+    const handlePaymentDone = async () => {
+      if (pagamento === "completo") {
+        const response = await updateData(`carrinho/comprar/${carrinho.id}`, carrinho, localStorage.getItem("token"));
+  
+        if (response.statusCode === 200) {
+          setTimeout(() => {
+            navigate("/tickets");
+          }, 5000);
+        } else {
+          throw new Error("Erro ao comprar itens do carrinho");
+        }
+      }
+    };
+
     handlePaymentDone();
   });
 
@@ -50,6 +65,7 @@ function Pagamento() {
     if (response.statusCode !== 200) {
       throw new Error("Erro ao pegar itens do carrinho");
     } else {
+      setCarrinho(response.data);
       setItensCarrinho(response.data.itensCarrinho);
     }
   };
@@ -58,8 +74,10 @@ function Pagamento() {
     let soma = 0.0;
     if (itensCarrinho.length > 0) {
       for (const item of itensCarrinho) {
-        let itemValor = item.tipoTicket.valorTicket * item.quantidade;
-        soma += itemValor;
+        if (item.status === "PENDENTE") {
+          let itemValor = item.tipoTicket.valorTicket * item.quantidade;
+          soma += itemValor;
+        }
       }
     }
     return soma.toFixed(2);
@@ -79,14 +97,6 @@ function Pagamento() {
     setTimeout(() => {
       navigate("/");
     }, 2000);
-  };
-
-  const handlePaymentDone = () => {
-    if (pagamento === "completo") {
-      setTimeout(() => {
-        navigate("/tickets");
-      }, 5000);
-    }
   };
 
   const progressBar = (text, payment) => {
