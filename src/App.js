@@ -17,6 +17,8 @@ import Contato from './pages/Contato/Contato';
 import Evento from './pages/Evento/Evento';
 import CriarEvento from './pages/Evento/CriarEvento';
 import Carrinho from './pages/Carrinho/Carrinho';
+import Pagamento from './pages/Pagamento/Pagamento';
+// import Pagamento from './pages/Carrinho/Pagamento';
 
 
 function App() {
@@ -62,6 +64,14 @@ function App() {
                         element={
                             <PrivateRoute>
                                 <Carrinho/>
+                            </PrivateRoute>
+                        }
+                    />
+                    <Route
+                        path="/pagamento"
+                        element={
+                            <PrivateRoute>
+                                <Pagamento/>
                             </PrivateRoute>
                         }
                     />
