@@ -44,7 +44,7 @@ function Navbar() {
               Dashboard
             </Link>
           </li>
-          {/* <li className="nav-item">
+          <li className="nav-item">
             <Link to="/politica" className="nav-link">
               Políticas
             </Link>
@@ -53,12 +53,12 @@ function Navbar() {
             <Link to="/contato" className="nav-link">
               Contato
             </Link>
-          </li> */}
-          {/* <li className="nav-item">
+          </li>
+          <li className="nav-item">
             <Link to="/carrinho" className="nav-link">
               Carrinho
             </Link>
-          </li> */}
+          </li>
         </ul>
       </nav>
       <div className="auth-buttons">
