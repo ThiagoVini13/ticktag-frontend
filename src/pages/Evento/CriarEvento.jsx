@@ -287,7 +287,7 @@ function CriarEvento() {
                                 id="nomeEspaco"
                                 className="form-control"
                                 name="nomeEspaco"
-                                value={evento.enderecoVO.nomeEspaco}
+                                value={evento.endereco.nomeEspaco}
                                 onChange={manipularMudancaEndereco}
                                 required
                             />
