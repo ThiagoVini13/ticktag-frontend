@@ -7,7 +7,7 @@
     background-color: #f4f4f9;
 }
 
-.form-box {
+.contato.form-box {
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
@@ -18,23 +18,23 @@
     margin: 20px;
 }
 
-.form-box h2 {
+.contato.form-box h2 {
     text-align: center;
     margin-bottom: 20px;
 }
 
-.form-group {
+.contato.form-group {
     margin-bottom: 15px;
 }
 
-.form-group label {
+.contato.form-group label {
     display: block;
     font-weight: bold;
     margin-bottom: 5px;
 }
 
-.form-group input,
-.form-group textarea {
+.contato.form-group input,
+.contato.form-group textarea {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
@@ -42,12 +42,12 @@
     box-sizing: border-box;
 }
 
-.form-group textarea {
+.contato.form-group textarea {
     resize: vertical;
     min-height: 100px;
 }
 
-button {
+.contato.btn-submit {
     background-color: #007bff;
     color: white;
     border: none;
@@ -58,11 +58,11 @@ button {
     font-size: 16px;
 }
 
-button:hover {
+.contato.btn-submit:hover {
     background-color: #0056b3;
 }
 
-p {
+.contato.envio-status {
     text-align: center;
     margin-top: 15px;
     color: green;
