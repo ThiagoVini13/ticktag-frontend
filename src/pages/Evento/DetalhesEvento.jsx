@@ -2,7 +2,7 @@ import React from 'react';
 import { FaMapMarkerAlt, FaCalendarAlt, FaUser } from 'react-icons/fa';
 
 function DetalhesEvento({ evento }) {
-    const { enderecoVO, dataEvento, classificacaoIdade, lotacaoMaxima, statusEvento } = evento;
+    const { endereco, dataEvento, classificacaoIdade, lotacaoMaxima, statusEvento } = evento;
 
     // Formatar a data para o formato dd/MM/yyyy
     const formatarData = (data) => {
@@ -22,13 +22,13 @@ function DetalhesEvento({ evento }) {
                     {/* <p><strong>Classificação:</strong> {classificacaoIdade ? `${classificacaoIdade}+` : "Não disponível"}</p> */}
                     <p><strong>Classificação:</strong>{classificacaoIdade === 0 ? " Livre" : ` ${classificacaoIdade}+` } </p>
                 </div>
-                {enderecoVO && (
+                {endereco && (
                     <div className="evento-info-item">
                         <FaMapMarkerAlt className="icon" />
                         <div>
-                            <p><strong>Local:</strong> {enderecoVO.nomeEspaco}</p>
-                            <p>{`${enderecoVO.tipoLogradouro} ${enderecoVO.nomeLogradouro}, ${enderecoVO.numero}`}</p>
-                            <p>{`${enderecoVO.bairro}, ${enderecoVO.cidade} - ${enderecoVO.uf}`}</p>
+                            <p><strong>Local:</strong> {endereco.nomeEspaco}</p>
+                            <p>{`${endereco.tipoLogradouro} ${endereco.nomeLogradouro}, ${endereco.numero}`}</p>
+                            <p>{`${endereco.bairro}, ${endereco.cidade} - ${endereco.uf}`}</p>
                         </div>
                     </div>
                 )}

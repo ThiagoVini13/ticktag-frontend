@@ -10,7 +10,7 @@ function CriarEvento() {
         statusEvento: '',
         dataEvento: '',
         horaEvento: '',
-        enderecoVO: {
+        endereco: {
             tipoLogradouro: '',
             nomeLogradouro: '',
             numero: '',
@@ -94,7 +94,7 @@ function CriarEvento() {
         const {name, value} = e.target;
         setEvento(prevState => ({
             ...prevState,
-            enderecoVO: {...prevState.enderecoVO, [name]: value}
+            endereco: {...prevState.endereco, [name]: value}
         }));
     };
 
@@ -298,7 +298,7 @@ function CriarEvento() {
                                 id="tipoLogradouro"
                                 className="form-control"
                                 name="tipoLogradouro"
-                                value={evento.enderecoVO.tipoLogradouro}
+                                value={evento.endereco.tipoLogradouro}
                                 onChange={manipularMudancaEndereco}
                                 required
                             >
@@ -317,7 +317,7 @@ function CriarEvento() {
                                 id="nomeLogradouro"
                                 className="form-control"
                                 name="nomeLogradouro"
-                                value={evento.enderecoVO.nomeLogradouro}
+                                value={evento.endereco.nomeLogradouro}
                                 onChange={manipularMudancaEndereco}
                                 required
                             />
@@ -329,7 +329,7 @@ function CriarEvento() {
                                 id="numero"
                                 className="form-control"
                                 name="numero"
-                                value={evento.enderecoVO.numero}
+                                value={evento.endereco.numero}
                                 onChange={manipularMudancaEndereco}
                                 required
                             />
@@ -341,7 +341,7 @@ function CriarEvento() {
                                 id="complemento"
                                 className="form-control"
                                 name="complemento"
-                                value={evento.enderecoVO.complemento}
+                                value={evento.endereco.complemento}
                                 onChange={manipularMudancaEndereco}
                             />
                         </div>
@@ -354,7 +354,7 @@ function CriarEvento() {
                                 id="bairro"
                                 className="form-control"
                                 name="bairro"
-                                value={evento.enderecoVO.bairro}
+                                value={evento.endereco.bairro}
                                 onChange={manipularMudancaEndereco}
                                 required
                             />
@@ -366,7 +366,7 @@ function CriarEvento() {
                                 id="cidade"
                                 className="form-control"
                                 name="cidade"
-                                value={evento.enderecoVO.cidade}
+                                value={evento.endereco.cidade}
                                 onChange={manipularMudancaEndereco}
                                 required
                             />
@@ -377,7 +377,7 @@ function CriarEvento() {
                                 id="uf"
                                 className="form-control"
                                 name="uf"
-                                value={evento.enderecoVO.uf}
+                                value={evento.endereco.uf}
                                 onChange={manipularMudancaEndereco}
                                 required
                             >

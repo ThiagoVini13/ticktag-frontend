@@ -7,7 +7,7 @@ test('Mostrar dados do evento', () => {
         nomeEvento: 'Evento Teste',
         dataEvento: '2023-10-10',
         capaEvento: '',
-        enderecoVO: { nomeLogradouro: 'Rua Exemplo', cidade: 'Cidade Teste' },
+        endereco: { nomeLogradouro: 'Rua Exemplo', cidade: 'Cidade Teste' },
         lotacaoMaxima: 100,
         classificacaoIdade: '10+',
         statusEvento: 'ativo'

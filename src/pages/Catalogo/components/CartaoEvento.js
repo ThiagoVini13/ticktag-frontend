@@ -18,8 +18,8 @@ function CartaoEvento({ evento }) {
                 <Card.Title>{evento.nomeEvento}</Card.Title>
                 <Card.Subtitle className="mb-1" >{dataFormatada} - {horaFormatada}</Card.Subtitle>
                 <Card.Text className="fs-6 fst-italic">
-                    {evento.enderecoVO &&
-                        evento.enderecoVO.nomeLogradouro + '-' + evento.enderecoVO.cidade}
+                    {evento.endereco &&
+                        evento.endereco.nomeLogradouro + '-' + evento.endereco.cidade}
                 </Card.Text>
                 <Card.Text className="mb-1">
                     <strong>Lotação Máxima:</strong> {evento.lotacaoMaxima}</Card.Text>

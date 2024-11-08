@@ -1,37 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, {useEffect, useState} from "react";
+import {useParams} from "react-router-dom";
 // Usando Font Awesome para ícones
-import DetalhesEvento from './DetalhesEvento';
-import ListaIngressos from './ListaIngressos';
-import Carregando from './Carregando';
-import NotificacaoErro from './NotificacaoErro';
-import './Evento.css';
-import { createData, fetchData } from '../../services/apiService';
+import DetalhesEvento from "./DetalhesEvento";
+import ListaIngressos from "./ListaIngressos";
+import Carregando from "./Carregando";
+import NotificacaoErro from "./NotificacaoErro";
+import "./Evento.css";
+import {getEventoById} from "../../services/apiService";
+import { createData } from '../../services/apiService';
 
 function Evento() {
-    const { idEvento } = useParams();
+    const {idEvento} = useParams();
     const [evento, setEvento] = useState(null);
     const [erro, setErro] = useState(null);
     const [ingressoSelecionado, setIngressoSelecionado] = useState(null);
     const [quantidade, setQuantidade] = useState(1);
 
     useEffect(() => {
-        fetchData(`evento/id/${idEvento}`, localStorage.getItem('token'))
-            .then((response) => {
-                if (response.data && response.statusCode === 200) {
-                    setEvento(response.data);
+        getEventoById(idEvento)
+            .then((responseData) => {
+                if (responseData && responseData.data) {
+                    setEvento(responseData.data);
                 } else {
                     throw new Error("Evento não encontrado");
                 }
             })
-            .catch(err => {
+            .catch((err) => {
                 console.error("Erro ao buscar evento:", err);
                 setErro(err.message);
             });
     }, [idEvento]);
 
-    if (erro) return <NotificacaoErro mensagem={erro} />;
-    if (!evento) return <Carregando />;
+    if (erro) return <NotificacaoErro mensagem={erro}/>;
+    if (!evento) return <Carregando/>;
 
     const handleTicketChange = (e) => {
         if(e.target.value){
@@ -85,10 +86,12 @@ function Evento() {
     return (
         <div className="evento-page">
             {/* Seção Hero com Banner */}
-            <div 
-                className="hero-section" 
-                style={{ backgroundImage: `url("data:image/png;base64,${evento.capaEvento}")` }}
-                >
+            <div
+                className="hero-section"
+                style={{
+                    backgroundImage: `url("data:image/png;base64,${evento.capaEvento}")`,
+                }}
+            >
                 <div className="hero-overlay">
                     <h1 className="hero-title">{evento.nomeEvento}</h1>
                 </div>
@@ -98,16 +101,19 @@ function Evento() {
             <div className="main-content container">
                 <div className="row">
                     <div className="col-lg-6 mb-4">
-                        <DetalhesEvento evento={evento} />
+                        <DetalhesEvento evento={evento}/>
                     </div>
                     <div className="col-lg-6 mb-4">
-                        <ListaIngressos ingressos={evento.tickets} />
+                        <ListaIngressos ingressos={evento.tickets}/>
                         <div className="purchase-section mt-4">
                             <h2 className="h5">Comprar Ingressos</h2>
-                            <select className="form-select mb-3" onChange={handleTicketChange}>
+                            <select
+                                className="form-select mb-3"
+                                onChange={handleTicketChange}
+                            >
                                 <option value="">Selecione o tipo de ingresso</option>
-                                {evento.tickets.map(ingresso => (
-                                    <option key={ingresso?.id} value={ingresso?.id}>
+                                {evento.tickets.map((ingresso) => (
+                                    <option key={ingresso.id} value={ingresso.id}>
                                         {ingresso.tipoTicket} - R${ingresso.valorTicket.toFixed(2)}
                                     </option>
                                 ))}
