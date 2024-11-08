@@ -1,7 +1,7 @@
 // src/App.js
 import React from "react";
-import { Route, Routes, Navigate } from "react-router-dom"; // Adicione Navigate aqui
-import { AuthProvider } from "./context/AuthContext";
+import {Navigate, Route, Routes} from "react-router-dom"; // Adicione Navigate aqui
+import {AuthProvider} from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -33,6 +33,7 @@ function App() {
                         <Route path="/evento/id/:idEvento" element={<Evento />} />
                         <Route path="/politica" element={<Politica />} />
                         <Route path="/contato" element={<Contato />} />
+                        <Route path="/home" element={<Home />} />
 
                         {/* Rotas privadas */}
                         <Route
@@ -61,7 +62,7 @@ function App() {
                         />
 
                         {/* Rota padrão */}
-                        <Route path="/" element={<Navigate to="/login" />} /> {/* Redireciona para /home */}
+                        <Route path="/" element={<Navigate to="/home" />} /> {/* Redireciona para /home */}
                     </Routes>
                 </div>
                 <Footer />
