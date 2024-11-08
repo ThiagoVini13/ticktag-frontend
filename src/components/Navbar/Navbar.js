@@ -59,6 +59,11 @@ function Navbar() {
               Carrinho
             </Link>
           </li>
+          <li className="nav-item">
+            <Link to="/tickets" className="nav-link">
+              Tickets
+            </Link>
+          </li>
         </ul>
       </nav>
       <div className="auth-buttons">

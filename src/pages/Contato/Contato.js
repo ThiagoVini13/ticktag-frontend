@@ -41,10 +41,10 @@ function Contato() {
 
   return (
     <div className="contato-container">
-      <div className="form-box">
+      <div className="contato form-box">
         <h2>Entre em contato conosco</h2>
         <form onSubmit={handleSubmit}>
-          <div className="form-group">
+          <div className="contato form-group">
             <label htmlFor="nome">Nome:</label>
             <input
               type="text"
@@ -55,7 +55,7 @@ function Contato() {
               required
             />
           </div>
-          <div className="form-group">
+          <div className="contato form-group">
             <label htmlFor="email">E-mail:</label>
             <input
               type="email"
@@ -66,7 +66,7 @@ function Contato() {
               required
             />
           </div>
-          <div className="form-group">
+          <div className="contato form-group">
             <label htmlFor="mensagem">Mensagem:</label>
             <textarea
               id="mensagem"
@@ -76,10 +76,10 @@ function Contato() {
               required
             />
           </div>
-          <button type="submit">Enviar</button>
+          <button className="contato btn-submit" type="submit">Enviar</button>
         </form>
 
-        {envioStatus && <p>{envioStatus}</p>}
+        {envioStatus && <p className="contato envio-status">{envioStatus}</p>}
       </div>
     </div>
   );

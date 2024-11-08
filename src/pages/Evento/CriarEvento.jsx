@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import './CriarEvento.css';
-import {createEvento} from "../../services/apiService";
+import { createEvento } from '../../services/apiService';
 
 function CriarEvento() {
     const navigate = useNavigate();
@@ -75,7 +75,6 @@ function CriarEvento() {
         "Canteiro",
         "Beco",
         "Cerro",
-        "Caminho",
         "Marginal",
         "Escadaria",
         "Subida",
@@ -178,8 +177,7 @@ function CriarEvento() {
             ...evento,
             dataEvento: combinarDataHora()
         };
-
-
+      
         try {
             const dados = await createEvento(eventoFormatado);
             navigate('/evento/id/' + dados.data.id);
@@ -283,6 +281,18 @@ function CriarEvento() {
                     <h4 className="section-title">Endereço</h4>
                     <div className="form-row">
                         <div className="form-group col">
+                            <label htmlFor="nomeEspaco">Nome Espaço</label>
+                            <input
+                                type="text"
+                                id="nomeEspaco"
+                                className="form-control"
+                                name="nomeEspaco"
+                                value={evento.endereco.nomeEspaco}
+                                onChange={manipularMudancaEndereco}
+                                required
+                            />
+                        </div>
+                        <div className="form-group col">
                             <label htmlFor="tipoLogradouro">Tipo de Logradouro*</label>
                             <select
                                 id="tipoLogradouro"
@@ -298,6 +308,8 @@ function CriarEvento() {
                                 ))}
                             </select>
                         </div>
+                    </div>
+                    <div className="form-row">
                         <div className="form-group col">
                             <label htmlFor="nomeLogradouro">Nome do Logradouro*</label>
                             <input
@@ -310,8 +322,6 @@ function CriarEvento() {
                                 required
                             />
                         </div>
-                    </div>
-                    <div className="form-row">
                         <div className="form-group col">
                             <label htmlFor="numero">Número*</label>
                             <input
