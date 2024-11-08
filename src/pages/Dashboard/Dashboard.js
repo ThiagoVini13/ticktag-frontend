@@ -39,19 +39,19 @@ const Dashboard = () => {
     const fetchData = async () => {
       try {
         const ageResponse = await getEventAgeClassificationBreakdown();
-        setAgeClassification(ageResponse.data);
+        setAgeClassification(ageResponse);
 
         const capacityResponse = await getAverageEventCapacity();
-        setAverageCapacity(capacityResponse.data.capacidadeMedia);
+        setAverageCapacity(capacityResponse.capacidadeMedia);
 
         const distributionResponse = await getEventDistributionByDate();
-        setEventDistribution(distributionResponse.data);
+        setEventDistribution(distributionResponse);
 
         const topEventsResponse = await getTopEventsByCapacity(5);
-        setTopEvents(topEventsResponse.data);
+        setTopEvents(topEventsResponse);
 
         const utilizationResponse = await getEventCapacityUtilization();
-        setEventCapacityUtilization(utilizationResponse.data);
+        setEventCapacityUtilization(utilizationResponse);
       } catch (err) {
         console.error("Erro ao buscar dados:", err);
         setError("Erro ao buscar dados da API");
