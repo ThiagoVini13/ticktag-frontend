@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, {useState} from 'react';
+import {useNavigate} from 'react-router-dom';
 import './CriarEvento.css';
 import { createData } from '../../services/apiService';
 
@@ -23,7 +23,7 @@ function CriarEvento() {
         tickets: [],
         lotacaoMaxima: '',
         classificacaoIdade: '',
-        baseImagem:''
+        baseImagem: ''
     });
 
     const [ingresso, setIngresso] = useState({
@@ -82,26 +82,26 @@ function CriarEvento() {
         "Jardim",
         "Bairro"
     ];
-    
+
     // Manipula mudanças nos campos do formulário de evento
     const manipularMudancaEvento = (e) => {
-        const { name, value } = e.target;
-        setEvento(prevState => ({ ...prevState, [name]: value }));
+        const {name, value} = e.target;
+        setEvento(prevState => ({...prevState, [name]: value}));
     };
 
     // Manipula mudanças nos campos do endereço
     const manipularMudancaEndereco = (e) => {
-        const { name, value } = e.target;
+        const {name, value} = e.target;
         setEvento(prevState => ({
             ...prevState,
-            enderecoVO: { ...prevState.enderecoVO, [name]: value }
+            enderecoVO: {...prevState.enderecoVO, [name]: value}
         }));
     };
 
     // Manipula mudanças nos campos do ingresso
     const manipularMudancaIngresso = (e) => {
-        const { name, value } = e.target;
-        setIngresso(prevState => ({ ...prevState, [name]: value }));
+        const {name, value} = e.target;
+        setIngresso(prevState => ({...prevState, [name]: value}));
     };
 
     // Adiciona um novo ingresso ao evento
@@ -113,7 +113,7 @@ function CriarEvento() {
 
         setEvento(prevState => ({
             ...prevState,
-            tickets: [...prevState.tickets, { ...ingresso }]
+            tickets: [...prevState.tickets, {...ingresso}]
         }));
 
         setIngresso({
@@ -153,7 +153,7 @@ function CriarEvento() {
             const reader = new FileReader();
             reader.onloadend = () => {
                 const base64String = reader.result.split(',')[1]; // Remove o prefixo
-                setEvento((prev) => ({ ...prev, baseImagem: base64String })); // Armazena somente a parte base64
+                setEvento((prev) => ({...prev, baseImagem: base64String})); // Armazena somente a parte base64
             };
             reader.readAsDataURL(file);
         }
@@ -177,14 +177,11 @@ function CriarEvento() {
             ...evento,
             dataEvento: combinarDataHora()
         };
-
+      
         try {
-            const response = await createData("evento", eventoFormatado, localStorage.getItem("token"));
-            
-            if (response.statusCode !== 200) throw new Error('Erro ao criar o evento');
-
-            navigate('/evento/id/'+ response.data.id);
-            console.log('Evento criado:', response.data);
+            const dados = await createEvento(eventoFormatado);
+            navigate('/evento/id/' + dados.data.id);
+            console.log('Evento criado:', dados);
         } catch (erro) {
             console.error('Erro ao enviar o evento:', erro);
         }
@@ -193,10 +190,10 @@ function CriarEvento() {
     return (
         <div className="criar-evento-page container">
             {evento.baseImagem !== '' && (
-                <div 
-                    className="hero-section" 
-                    style={{ backgroundImage: `url("data:image/png;base64,${evento.baseImagem}")` }}
-                    >
+                <div
+                    className="hero-section"
+                    style={{backgroundImage: `url("data:image/png;base64,${evento.baseImagem}")`}}
+                >
                     <div className="hero-overlay">
                         <h1 className="hero-title">{evento.nomeEvento}</h1>
                     </div>
@@ -485,7 +482,8 @@ function CriarEvento() {
                         <ul className="lista-ingressos">
                             {evento.tickets.map((t, index) => (
                                 <li key={index} className="item-ingresso">
-                                    <i className="fas fa-ticket-alt"></i> Lote: {t.lote}, Quantidade: {t.qtdLote}, Valor: R${t.valorTicket}, Valor Meia: R${t.valorMeiaTicket}, Tipo: {t.tipoTicket}
+                                    <i className="fas fa-ticket-alt"></i> Lote: {t.lote}, Quantidade: {t.qtdLote},
+                                    Valor: R${t.valorTicket}, Valor Meia: R${t.valorMeiaTicket}, Tipo: {t.tipoTicket}
                                 </li>
                             ))}
                         </ul>

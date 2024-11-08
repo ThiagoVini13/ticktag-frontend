@@ -1,31 +1,11 @@
-const API_URL = "http://localhost:8080"; // Coloque a URL da sua API aqui
-
-// Função de login
-export async function login(email, password) {
-    const response = await fetch(`${API_URL}/auth/login`, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({email, password})
-    });
-
-
-    if (!response.ok) {
-        const errorDetails = await response.json().catch(() => ({}));
-        console.error('Erro no login:', errorDetails);
-        throw new Error(`Falha no login: ${errorDetails.message || 'Erro desconhecido'}`);
-    }
-
-    return await response.json();
-}
+const API_URL = process.env.REACT_APP_API_URL;
+const getToken = () => localStorage.getItem('token');
 
 // Função de registro
-// src/services/apiService.js
 export async function register(userData) {
     const response = await fetch(`${API_URL}/usuarios`, {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
+        headers: {"Content-Type": "application/json"},
         body: JSON.stringify(userData),
         mode: "cors" // Adiciona o modo CORS explicitamente
     });
@@ -39,21 +19,9 @@ export async function register(userData) {
     return await response.json();
 }
 
-
-// Função para lidar com requisições GET com token de autenticação
-export async function fetchData(endpoint, token) {
-    const response = await fetch(`${API_URL}/${endpoint}`, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        },
-    });
-    if (!response.ok) throw new Error("Erro ao buscar dados");
-    return await response.json();
-}
-
 // Função para criar dados (POST) com token de autenticação
-export async function createData(endpoint, data, token) {
+export async function createData(endpoint, data) {
+    const token = getToken(); // Recupera o token aqui
     const response = await fetch(`${API_URL}/${endpoint}`, {
         method: "POST",
         headers: {
@@ -67,7 +35,8 @@ export async function createData(endpoint, data, token) {
 }
 
 // Função para atualizar dados (PUT) com token de autenticação
-export async function updateData(endpoint, data, token) {
+export async function updateData(endpoint, data) {
+    const token = getToken(); // Recupera o token aqui
     const response = await fetch(`${API_URL}/${endpoint}`, {
         method: "PUT",
         headers: {
@@ -81,7 +50,8 @@ export async function updateData(endpoint, data, token) {
 }
 
 // Função para excluir dados (DELETE) com token de autenticação
-export async function deleteData(endpoint, token) {
+export async function deleteData(endpoint) {
+    const token = getToken(); // Recupera o token aqui
     const response = await fetch(`${API_URL}/${endpoint}`, {
         method: "DELETE",
         headers: {
@@ -89,5 +59,74 @@ export async function deleteData(endpoint, token) {
         },
     });
     if (!response.ok) throw new Error("Erro ao excluir dados");
+    return await response.json();
+}
+
+// Função de login
+export async function login(email, password) {
+    const response = await fetch(`${API_URL}/auth/login`, {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({email, password})
+    });
+
+    if (!response.ok) {
+        const errorDetails = await response.json().catch(() => ({}));
+        console.error('Erro no login:', errorDetails);
+        throw new Error(`Falha no login: ${errorDetails.message || 'Erro desconhecido'}`);
+    }
+
+    return await response.json();
+}
+
+// Função para criar evento
+export async function createEvento(eventoFormatado) {
+    const token = getToken(); // Recupera o token aqui
+
+    try {
+        const resposta = await fetch(`${API_URL}/evento`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(eventoFormatado)
+        });
+
+        if (!resposta.ok) throw new Error('Erro ao criar o evento');
+
+        const dados = await resposta.json();
+        console.log('Evento criado:', dados);
+        return dados; // Retorna os dados do evento criado
+    } catch (erro) {
+        console.error('Erro ao enviar o evento:', erro);
+        throw erro; // Re-throw the error for further handling if needed
+    }
+}
+
+// Demais funções...
+
+// Função para lidar com requisições GET com token de autenticação
+export async function fetchData(endpoint) {
+    const token = getToken(); // Recupera o token aqui
+    const response = await fetch(`${API_URL}/${endpoint}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+    });
+    if (!response.ok) throw new Error("Erro ao buscar dados");
+    return await response.json();
+}
+
+// Funções para criar, atualizar, excluir dados com token...
+
+export async function fetchPublicData(endpoint) {
+    const response = await fetch(`${API_URL}/${endpoint}`, {
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    });
+    if (!response.ok) throw new Error("Erro ao buscar dados");
     return await response.json();
 }
