@@ -108,7 +108,7 @@ function Home() {
                           }
                         )}
                       </p>
-                      <p>{evento.enderecoVO.nomeEspaco}</p>
+                      <p>{evento.endereco.nomeEspaco}</p>
                     </Card.Text>
                     <Button variant="primary">
                       <Link to={`/evento/id/${evento.id}`} className="nav-link">
@@ -149,7 +149,7 @@ function Home() {
                           }
                         )}
                       </p>
-                      <p>{evento.enderecoVO.nomeEspaco}</p>
+                      <p>{evento.endereco.nomeEspaco}</p>
                     </Card.Text>
                     <Button variant="primary">
                       <Link to={`/evento/id/${evento.id}`} className="nav-link">
@@ -190,7 +190,7 @@ function Home() {
                           }
                         )}
                       </p>
-                      <p>{evento.enderecoVO.nomeEspaco}</p>
+                      <p>{evento.endereco.nomeEspaco}</p>
                     </Card.Text>
                     <Button variant="primary">
                       <Link to={`/evento/id/${evento.id}`} className="nav-link">
