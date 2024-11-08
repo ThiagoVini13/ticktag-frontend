@@ -1,27 +1,88 @@
-import React from 'react';
-import './Contato.css'; // Se você tiver um arquivo CSS para estilizar o contato
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React, { useState } from 'react';
+import emailjs from '@emailjs/browser';
+import './Contato.css'; // Adicionando a importação do CSS
 
 function Contato() {
+  const [formData, setFormData] = useState({
+    nome: '',
+    email: '',
+    mensagem: '',
+  });
+
+  const [envioStatus, setEnvioStatus] = useState('');
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .send('service_snepfbf', 'template_nne98h9', formData, 'user_3IAYe276ECwC0A0vs')
+      .then(
+        (result) => {
+          setEnvioStatus('Mensagem enviada com sucesso!');
+          setFormData({
+            nome: '',
+            email: '',
+            mensagem: '',
+          });
+        },
+        (error) => {
+          setEnvioStatus('Erro ao enviar a mensagem. Tente novamente.');
+        }
+      );
+  };
+
   return (
-    <div className="container mt-4">
-      <h2 className="text-center">Contato com o Suporte</h2>
-      <p>
-        Nosso time de suporte está pronto para ajudar você em cada etapa da sua experiência. Se precisar de ajuda com suas compras, entender melhor nossas políticas, ou esclarecer qualquer dúvida, entre em contato conosco por meio dos canais abaixo:
-      </p>
-      <ul>
-        <li><strong>E-mail:</strong> suporte@exemploingressos.com</li>
-        <li><strong>Telefone:</strong> (XX) XXXX-XXXX (disponível de segunda a sexta, das 9h às 18h)</li>
-        <li>
-          <strong>Formulário de Contato:</strong> 
-          <a href="https://docs.google.com/forms/d/1AK8GSEpsesmTFmaPSQWL3WMo8LNqouCpZtdrS3sxE_I/prefill" target="_blank" rel="noopener noreferrer">
-            Clique aqui para preencher o formulário
-          </a>
-        </li>
-      </ul>
+    <div className="contato-container">
+      <div className="form-box">
+        <h2>Entre em contato conosco</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="nome">Nome:</label>
+            <input
+              type="text"
+              id="nome"
+              name="nome"
+              value={formData.nome}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="email">E-mail:</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label htmlFor="mensagem">Mensagem:</label>
+            <textarea
+              id="mensagem"
+              name="mensagem"
+              value={formData.mensagem}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          <button type="submit">Enviar</button>
+        </form>
+
+        {envioStatus && <p>{envioStatus}</p>}
+      </div>
     </div>
   );
 }
 
 export default Contato;
-
