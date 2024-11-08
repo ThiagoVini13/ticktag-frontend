@@ -17,7 +17,7 @@ function Carrinho() {
       `carrinho/usuario?email=${localStorage.getItem("email")}`,
       localStorage.getItem("token")
     );
-    
+
     if (response.statusCode !== 200) {
       throw new Error("Erro ao pegar itens do carrinho");
     } else {
@@ -27,10 +27,6 @@ function Carrinho() {
   };
 
   const removerDoCarrinho = async (item) => {
-    console.log("Removou item");
-
-    console.log({ item });
-
     const response = await deleteData(`item-carrinho/${item.id}`, localStorage.getItem("token"));
 
     if (response.statusCode !== 200) {
@@ -71,16 +67,32 @@ function Carrinho() {
     let soma = 0.0;
     if (itensCarrinho.length > 0) {
       for (const item of itensCarrinho) {
-        let itemValor = item.tipoTicket.valorTicket * item.quantidade;
-        soma += itemValor;
+        if (item.status === "PENDENTE") {
+          let itemValor = item.tipoTicket.valorTicket * item.quantidade;
+          soma += itemValor;
+        }
       }
     }
 
     return soma.toFixed(2);
   };
 
+  const verifyItemsPending = () => {
+    let pending = false;
+
+    if(itensCarrinho.length > 0){
+      for(const item of itensCarrinho){
+        if(item.status === "PENDENTE"){
+          pending = true;
+        }
+      }
+    }
+
+    return pending;
+  }
+
   return (
-    <div className="carrinho-container">
+    <div className="items-container">
       <div className="page-title">Carrinho de Compras</div>
       <div className="content">
         <section>
@@ -95,15 +107,19 @@ function Carrinho() {
               </tr>
             </thead>
             <tbody>
-              {itensCarrinho.length > 0 ? (
-                carrinho.itensCarrinho.map((item) => (
-                  <Produto
-                    key={item._id}
-                    data={item}
-                    removerDoCarrinho={removerDoCarrinho}
-                    atualizarOCarrinho={atualizarOCarrinho}
-                  />
-                ))
+              {verifyItemsPending() ? (
+                carrinho.itensCarrinho.map((item) =>
+                  item.status == "PENDENTE" ? (
+                    <Produto
+                      key={item.id}
+                      data={item}
+                      removerDoCarrinho={removerDoCarrinho}
+                      atualizarOCarrinho={atualizarOCarrinho}
+                    />
+                  ) : (
+                    ""
+                  )
+                )
               ) : (
                 <tr>
                   <td colSpan={"5"} style={{ textAlign: "center" }}>
@@ -115,7 +131,7 @@ function Carrinho() {
           </table>
         </section>
         <aside>
-          <Somatorio calculaTotal={calcularTotal}/>
+          <Somatorio calculaTotal={calcularTotal} />
         </aside>
       </div>
     </div>
