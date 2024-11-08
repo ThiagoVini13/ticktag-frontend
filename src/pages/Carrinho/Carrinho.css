@@ -63,13 +63,18 @@ table {
   }
 
   .info {
-    margin-left: 20px;
+    margin-left: 25px;
     .nome {
-      font-size: 20px;
+      font-size: 25px;
       margin-bottom: 10px;
     }
-    .categoria {
+    .tipo-ticket {
       color: #666;
+      font-size: 18px;
+    }
+    .lote {
+      color: #666;
+      font-size: 18px;
     }
   }
 }

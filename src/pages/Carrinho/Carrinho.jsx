@@ -1,108 +1,89 @@
 import React, { useEffect, useState } from "react";
 import "./Carrinho.css";
 import Produto from "./Produto";
-import { carrinhoApi } from "./service/carrinho";
 import Somatorio from "./Somatorio";
-
-function randomNumber(min, max) {
-  return Math.floor(Math.random() * (max - min) + min);
-}
+import { deleteData, fetchData, updateData } from "../../services/apiService";
 
 function Carrinho() {
-  
-  const produtoObj = {
-    nome: "Produto",
-    categoria: "Categoria",
-    preco: randomNumber(100, 1200),
-    quantidade: 1,
-  };
-  
-  const [carrinho, setCarrinho] = useState([produtoObj]);
-  const fetchData = () => {
-    
-    carrinhoApi.get("/carrinho").then((response) => {
-      console.log(response.data);
-      // console.log(response.data.data);
-      setCarrinho(response.data);
-      // setCarrinho(response.data.data);
-    });
-  };
+  const [carrinho, setCarrinho] = useState({});
+  const [itensCarrinho, setItensCarrinho] = useState([]);
 
   useEffect(() => {
-    fetchData();
+    getData();
   }, []);
 
-  const adicionarAoCarrinho = () => {
-    console.log("Adicionou item");
-
-    carrinhoApi.post("/carrinho", produtoObj).then((response) => {
-      console.log(response);
-      fetchData();
-    });
+  const getData = async () => {
+    const response = await fetchData(
+      `carrinho/usuario?email=${localStorage.getItem("email")}`,
+      localStorage.getItem("token")
+    );
+    
+    if (response.statusCode !== 200) {
+      throw new Error("Erro ao pegar itens do carrinho");
+    } else {
+      setCarrinho(response.data);
+      setItensCarrinho(response.data.itensCarrinho);
+    }
   };
 
-  const removerDoCarrinho = (item) => {
+  const removerDoCarrinho = async (item) => {
     console.log("Removou item");
 
     console.log({ item });
 
-    carrinhoApi.delete(`/carrinho/${item._id}`).then((response) => {
-      console.log(response);
-      fetchData();
-    });
+    const response = await deleteData(`item-carrinho/${item.id}`, localStorage.getItem("token"));
+
+    if (response.statusCode !== 200) {
+      throw new Error("Erro ao remover item do carrinho");
+    } else {
+      getData();
+    }
   };
 
-  const atualizarOCarrinho = (item, action) => {
-    console.log({ item });
+  const atualizarOCarrinho = async (item, action) => {
     let novaQuantidade = item.quantidade;
 
     if (action === "increase") {
       novaQuantidade += 1;
     } else if (action === "decrease") {
-      if (novaQuantidade >= 1) {
+      if (novaQuantidade > 1) {
         novaQuantidade -= 1;
       } else {
-        console.log("Quantidade mínima: ", novaQuantidade);
+        alert(
+          `A quantidade mínima de ingressos é: ${novaQuantidade}, caso queira removê-lo, clique no botão ao lado `
+        );
       }
     }
 
     const novoItem = { ...item, quantidade: novaQuantidade };
-    delete novoItem._id;
+    delete novoItem.id;
 
-    console.log(novoItem);
-    carrinhoApi.put(`/carrinho/${item._id}`, novoItem).then((response) => {
-      console.log(response);
-      fetchData();
-    });
+    const response = await updateData(`item-carrinho/${item.id}`, novoItem, localStorage.getItem("token"));
 
-    console.log(novaQuantidade);
+    if (response.statusCode !== 200) {
+      throw new Error("Erro ao atualizar item do carrinho");
+    } else {
+      getData();
+    }
   };
 
   const calcularTotal = () => {
-    let soma = 0;
-
-    for (let item of carrinho) {
-      soma += item.preco * item.quantidade;
+    let soma = 0.0;
+    if (itensCarrinho.length > 0) {
+      for (const item of itensCarrinho) {
+        let itemValor = item.tipoTicket.valorTicket * item.quantidade;
+        soma += itemValor;
+      }
     }
 
-    console.log({ soma });
-
-    return soma;
+    return soma.toFixed(2);
   };
-
-  const totalDoCarrinho = calcularTotal();
 
   return (
     <div className="carrinho-container">
       <div className="page-title">Carrinho de Compras</div>
       <div className="content">
         <section>
-          {/* <button
-            onClick={adicionarAoCarrinho}
-            style={{ padding: "5px 10px", marginBottom: 15 }}
-          >
-            Adicione ao carrinho
-          </button> */}
           <table>
             <thead>
               <tr>
@@ -114,8 +95,8 @@ function Carrinho() {
               </tr>
             </thead>
             <tbody>
-              {carrinho != null ? (
-                carrinho.map((item) => (
+              {itensCarrinho.length > 0 ? (
+                carrinho.itensCarrinho.map((item) => (
                   <Produto
                     key={item._id}
                     data={item}
@@ -134,7 +115,7 @@ function Carrinho() {
           </table>
         </section>
         <aside>
-          <Somatorio total={totalDoCarrinho}/>
+          <Somatorio calculaTotal={calcularTotal}/>
         </aside>
       </div>
     </div>
