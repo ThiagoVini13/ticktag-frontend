@@ -62,7 +62,7 @@ function Home() {
             </p>
             <p>
               {" "}
-              Local: {eventoDoDia[indiceAleatorio]?.enderecoVO?.nomeEspaco}
+              Local: {eventoDoDia[indiceAleatorio]?.endereco?.nomeEspaco}
             </p>
             <Button variant="primary">
               <Link
